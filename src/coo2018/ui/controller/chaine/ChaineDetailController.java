@@ -1,0 +1,92 @@
+package coo2018.ui.controller.chaine;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import coo2018.model.Element;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
+import javafx.stage.Stage;
+
+public class ChaineDetailController implements Initializable {
+
+	private ObservableList<Element> elements = FXCollections.observableArrayList();
+	public List<Element> tabElements = new ArrayList<Element>();;
+			
+	@FXML
+	private TableView<Element> tableEntree;
+	
+	@FXML 
+	private Button bRetour;
+	
+//	public void ChaineDetailController(List<Element> entrants, List<Element> sortants) {
+//
+//		this.elements.addAll(entrants);
+//		this.tableEntree.getItems().addAll(this.elements);
+//	}
+	
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		
+		System.out.println("ELEMENT : " + this.tabElements.size());
+		this.tabElements.forEach(o -> {
+			
+			System.out.println(o.toString());
+		});
+		
+		this.bRetour.setOnAction(actionEvent -> {
+			
+			System.out.println("ELEMENT : " + this.tabElements.size());
+			this.tabElements.forEach(o -> {
+				
+				System.out.println(o.toString());
+			});
+//			RoutingUtils.goTo(actionEvent, Route.CHAINE);
+		});
+	}
+
+	/*
+	 * affiche un message d'alerte
+	 */
+	public void messageAlert() {
+
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Information");
+		alert.setHeaderText(null);
+		alert.setContentText("Les champs n'ont pas été correctement remplis !");
+		alert.showAndWait();
+	}
+	
+	public ObservableList<Element> getElements() {
+		return elements;
+	}
+
+	public void setElements(ObservableList<Element> elements) {
+		this.elements = elements;
+	}
+
+	public List<Element> getTabElements() {
+		return tabElements;
+	}
+
+	public void setTabElements(List<Element> tabElements) {
+		
+		System.out.println("WOOOOOOOOOOOOOOOOOW : " + tabElements.size());
+		this.tabElements = tabElements;
+	}
+
+	Stage stage;
+
+	void setStage(Stage stg) {
+		stage = stg;
+	}
+
+}

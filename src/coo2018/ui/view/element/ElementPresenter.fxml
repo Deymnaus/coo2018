@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="402.0" prefWidth="323.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coo2018.ui.controller.element.ElementController">
+	<children>
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+         <children>
+            <HBox>
+               <children>
+                  <MenuBar HBox.hgrow="ALWAYS">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Fichier">
+                        <items>
+                          <MenuItem fx:id="openFile" mnemonicParsing="false" text="Ouvrir" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </children>
+            </HBox>
+            <Button fx:id="bRetour" mnemonicParsing="false" text="Retour">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </Button>
+      		<FlowPane prefHeight="200.0" prefWidth="200.0">
+      			<children>
+                  <VBox>
+                     <children>
+      						<TableView fx:id="table" style="-fx-background-color: #333;">
+      							<columns>
+      								<TableColumn prefWidth="135.0" text="Identifiant">
+      									<cellValueFactory>
+      										<PropertyValueFactory property="id" />
+      									</cellValueFactory>
+      								</TableColumn>
+      								<TableColumn minWidth="0.0" prefWidth="142.0" text="Quantité">
+      									<cellValueFactory>
+      										<PropertyValueFactory property="quantite" />
+      									</cellValueFactory>
+      								</TableColumn>
+      
+      								<TableColumn minWidth="0.0" prefWidth="142.0" text="Nom">
+      									<cellValueFactory>
+      										<PropertyValueFactory property="nom" />
+      									</cellValueFactory>
+      								</TableColumn>
+      
+      								<TableColumn minWidth="0.0" prefWidth="142.0" text="Unité">
+      									<cellValueFactory>
+      										<PropertyValueFactory property="unite" />
+      									</cellValueFactory>
+      								</TableColumn>
+      
+      								<TableColumn minWidth="0.0" prefWidth="142.0" text="Prix d'achat">
+      									<cellValueFactory>
+      										<PropertyValueFactory property="prixAchat" />
+      									</cellValueFactory>
+      								</TableColumn>
+      
+      								<TableColumn minWidth="0.0" prefWidth="142.0" text="Prix de Vente">
+      									<cellValueFactory>
+      										<PropertyValueFactory property="prixVente" />
+      									</cellValueFactory>
+      								</TableColumn>
+      							</columns>
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+      						</TableView>
+                        <HBox spacing="10.0">
+                           <children>
+      								<TextField fx:id="tfId" promptText="Identifiant" />
+      								<TextField fx:id="tfQuantite" promptText="Quantité" />
+      								<TextField fx:id="tfNom" promptText="Nom" />
+      								<TextField fx:id="tfUnite" promptText="Unité" />
+      								<TextField fx:id="tfPrixAchat" promptText="Prix d'achat" />
+      								<TextField fx:id="tfPrixVente" promptText="Prix de vente" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+      						<VBox>
+      							<children>
+      								<HBox alignment="CENTER" spacing="10.0">
+      									<children>
+      										<Button fx:id="bAjouter" mnemonicParsing="false" text="Ajouter un nouvel élément" />
+      										<Button fx:id="bSupprimer" mnemonicParsing="false" text="Supprimer élément(s)" />
+      									</children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+      								</HBox>
+      							</children>
+      						</VBox>
+                     </children>
+                     <FlowPane.margin>
+                        <Insets />
+                     </FlowPane.margin>
+                  </VBox>
+      			</children>
+      		</FlowPane>
+         </children>
+      </VBox>
+	</children>
+</AnchorPane>
