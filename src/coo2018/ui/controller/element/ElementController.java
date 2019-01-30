@@ -23,6 +23,11 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author Andréa Christophe
+ *
+ */
 public class ElementController implements Initializable {
 
 	private ObservableList<Element> elements = FXCollections.observableArrayList();

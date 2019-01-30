@@ -12,9 +12,13 @@ import coo2018.model.event.ChaineEvent;
 import coo2018.utils.csv.CSVUtils;
 import coo2018.utils.persistence.Path;
 
+/**
+ * 
+ * @author Andréa Christophe
+ *
+ */
 public class Chaine extends Observable {
 
-//	private static int incremental;
 	private String id;
 	private String nom;
 	private int niveauActivation;
@@ -23,7 +27,6 @@ public class Chaine extends Observable {
 	
 	public Chaine() {
 		
-//		this.id = Chaine.incremental++;
 		this.id = ""; 
 		this.nom = "";
 		this.niveauActivation = 0;
@@ -34,6 +37,8 @@ public class Chaine extends Observable {
 	
 	/**
 	 * 
+	 * @param id
+	 * @param nom
 	 */
 	public Chaine(String id, String nom) {
 		
@@ -45,6 +50,12 @@ public class Chaine extends Observable {
 		this.addObserver(new ChaineEvent());
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @param nom
+	 * @param niveauActivation
+	 */
 	public Chaine(String id, String nom, int niveauActivation) {
 		
 		this.id = id; 
@@ -55,6 +66,13 @@ public class Chaine extends Observable {
 		this.addObserver(new ChaineEvent());
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @param nom
+	 * @param entree
+	 * @param sortie
+	 */
 	public Chaine(String id, String nom, List<Element> entree, List<Element> sortie) {
 		
 		this.id = id; 
@@ -65,6 +83,14 @@ public class Chaine extends Observable {
 		this.addObserver(new ChaineEvent());
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @param nom
+	 * @param niveauActivation
+	 * @param entree
+	 * @param sortie
+	 */
 	public Chaine(String id, String nom, int niveauActivation, List<Element> entree, List<Element> sortie) {
 		
 		this.id = id; 
@@ -75,51 +101,101 @@ public class Chaine extends Observable {
 		this.addObserver(new ChaineEvent());
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int getNiveauActivation() {
 		return niveauActivation;
 	}
-
+	
+	/**
+	 * 
+	 * @param niveauActivation
+	 * @return
+	 */
 	public Chaine setNiveauActivation(int niveauActivation) {
 		this.niveauActivation = niveauActivation;
 		return this;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public List<Element> getElementsEntree() {
 		return elementsEntree;
 	}
 
+	/**
+	 * 
+	 * @param elementsEntree
+	 * @return
+	 */
 	public Chaine setElementsEntree(List<Element> elementsEntree) {
 		this.elementsEntree = elementsEntree;
 		return this;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public List<Element> getElementsSortie() {
 		return elementsSortie;
 	}
 
+	/**
+	 * 
+	 * @param elementsSortie
+	 * @return
+	 */
 	public Chaine setElementsSortie(List<Element> elementsSortie) {
 		this.elementsSortie = elementsSortie;
 		return this;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String getId() {
 		return id;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNom() {
 		return nom;
 	}
 
+	/**
+	 * 
+	 * @param nom
+	 * @return
+	 */
 	public Chaine setNom(String nom) {
 		this.nom = nom;
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public Chaine setId(String id) {
 		this.id = id;
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param path
+	 * @return
+	 */
 	public static List<Chaine> CSVToChaine(String path) {
 		
 		List<Chaine> chaines = new ArrayList<Chaine>();
@@ -175,38 +251,30 @@ public class Chaine extends Observable {
 					elementsSortie
 				);
 			
-			System.out.println("----------------------");
-			System.out.println("Entrée");
-			
-//			chaine.elementsEntree.forEach(o -> {
-//				System.out.println(o.toString());
-//			});
-			
-			System.out.println("----------------------");
-			
-//			chaine.elementsSortie.forEach(o -> {
-//				System.out.println(o.toString());
-//			});
-			
-			System.out.println("Sortie");
-			
 			chaines.add(chaine);
 		});
 		
 		return chaines;
 	}
 	
+	/**
+	 * 
+	 */
 	public void transforme() {
 		
 		if (this.niveauActivation == 0) return;
 		
 		this.elementsEntree.forEach(elementEntree -> {
 			
-			// TODO
 		});
 	}
     
-
+	/**
+	 * 
+	 * @param id
+	 * @param path
+	 * @throws IOException
+	 */
 	public static void removeChaineToCSV(String id, String path) throws IOException {
 		
 		List<Chaine> chaine = CSVToChaine(path);
@@ -243,6 +311,11 @@ public class Chaine extends Observable {
 		printer.close();
 	}
 	
+	/**
+	 * 
+	 * @param chaine
+	 * @param path
+	 */
 	public static void addChaineToCSV(Chaine chaine, String path) {
 		
 		List<Chaine> chaines = CSVToChaine(path);
@@ -282,6 +355,10 @@ public class Chaine extends Observable {
 	
 	}
 	
+	/**
+	 * 
+	 * @return String
+	 */
 	public String elementsEntreeToString() {
 		
 		String res = "";	

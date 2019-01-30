@@ -6,6 +6,11 @@ import org.apache.commons.csv.CSVPrinter;
 
 import coo2018.utils.csv.CSVUtils;
 
+/**
+ * 
+ * @author Andréa Christophe
+ *
+ */
 public enum Route {
 	
 	ACCUEIL("../../ui/view/accueil/AccueilPresenter.fxml"), 
@@ -17,15 +22,27 @@ public enum Route {
     
     private String path;  
      
+    /**
+     * 
+     * @param path
+     */
     private Route(String path) {  
     	
         this.path = path ;  
    }  
      
+    /**
+     * 
+     * @return
+     */
     public String getPath() {  
         return  this.path ;  
-   }
+    }
     
+    /**
+     * 
+     * @param path
+     */
     public void savePathElement(String path) {
     	
     	String chainePath = getPath();

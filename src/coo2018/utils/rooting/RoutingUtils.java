@@ -9,8 +9,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author Andréa Christophe
+ *
+ */
 public class RoutingUtils {
 	
+	/**
+	 * Lance la vue passer en paramètre 
+	 * 
+	 * @param actionEvent
+	 * @param route
+	 */
 	public static void goTo(ActionEvent actionEvent, Route route) {
 		
 		try {

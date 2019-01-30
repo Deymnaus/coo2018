@@ -28,6 +28,11 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * s
+ * @author Andréa Christophe
+ *
+ */
 public class ChaineController implements Initializable {
 
 	private ObservableList<Chaine> chaines = FXCollections.observableArrayList();

@@ -8,11 +8,15 @@ import java.util.Map;
 import java.util.Observable;
 
 import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVRecord;
 
 import coo2018.model.event.ElementEvent;
 import coo2018.utils.csv.CSVUtils;
  
+/**
+ * 
+ * @author Andréa Christophe
+ *
+ */
 public class Element extends Observable {
  
     private String id;
@@ -22,6 +26,9 @@ public class Element extends Observable {
     private double prixAchat;
     private double prixVente;
  
+    /**
+     * 
+     */
     public Element() {
         this.id = "";
         this.quantite = 0;
@@ -32,6 +39,15 @@ public class Element extends Observable {
         this.addObserver(new ElementEvent());
     }
  
+    /**
+     * 
+     * @param id
+     * @param nom
+     * @param quantite
+     * @param unite
+     * @param prixAchat
+     * @param prixVente
+     */
     public Element(String id, String nom, int quantite, String unite, double prixAchat, double prixVente) {
         this.id = id;
         this.quantite = quantite;
@@ -43,14 +59,17 @@ public class Element extends Observable {
     }
  
     /**
-     * @return the nom
+     * 
+     * @return
      */
     public String getNom() {
         return this.nom;
     }
  
     /**
-     * @param nom the nom to set
+     * 
+     * @param nom
+     * @return
      */
     public Element setNom(String nom) {
         this.nom = nom;
@@ -65,7 +84,9 @@ public class Element extends Observable {
     }
  
     /**
-     * @param prenom the id to set
+     * 
+     * @param id
+     * @return
      */
     public Element setId(String id) {
         this.id = id;
@@ -73,14 +94,17 @@ public class Element extends Observable {
     }
     
     /**
-     * @return the quantite
+     * 
+     * @return
      */
     public int getQuantite() {
         return this.quantite;
     }
  
     /**
-     * @param prenom the prenom to set
+     * 
+     * @param quantite
+     * @return
      */
     public Element setQuantite(int quantite) {
     	
@@ -94,14 +118,17 @@ public class Element extends Observable {
     }
     
     /**
-     * @return the unite
+     * 
+     * @return
      */
     public String getUnite() {
         return this.unite;
     }
  
     /**
-     * @param prenom the unite to set
+     * 
+     * @param unite
+     * @return
      */
     public Element setUnite(String unite) {
         this.unite = unite;
@@ -109,14 +136,17 @@ public class Element extends Observable {
     }
     
     /**
-     * @return the prixAchat
+     * 
+     * @return
      */
     public double getPrixAchat() {
         return this.prixAchat;
     }
  
     /**
-     * @param prenom the unite to set
+     * 
+     * @param prixAchat
+     * @return
      */
     public Element setPrixAchat(double prixAchat) {
         this.prixAchat = prixAchat;
@@ -124,20 +154,28 @@ public class Element extends Observable {
     }
     
     /**
-     * @return the prixAchat
-     */
+    * 
+    * @return
+    */
     public double getPrixVente() {
         return this.prixVente;
     }
  
     /**
-     * @param prenom the unite to set
+     * 
+     * @param prixVente
+     * @return
      */
     public Element setPrixVente(double prixVente) {
         this.prixVente = prixVente;
         return this;
     }
     
+    /**
+     * 
+     * @param path
+     * @return List<Element>
+     */
     public static List<Element> CSVToElement(String path) {
     	
 		List<Element> elements = new ArrayList<Element>();
@@ -158,6 +196,11 @@ public class Element extends Observable {
 		return elements;
 	}
     
+    /**
+     * 
+     * @param path
+     * @return Map<String, Element>
+     */
     public static Map<String, Element> CSVToElementMap(String path) {
 		
 		Map<String, Element> elements = new HashMap<String, Element>();
@@ -178,6 +221,12 @@ public class Element extends Observable {
 		return elements;
 	}
 
+    /**
+     * 
+     * @param id
+     * @param path
+     * @throws IOException
+     */
 	public static void removeElementToCSV(String id, String path) throws IOException {
 		
 		List<Element> elements = CSVToElement(path);
@@ -214,6 +263,11 @@ public class Element extends Observable {
 		printer.close();
 	}
 	
+	/**
+	 * 
+	 * @param element
+	 * @param path
+	 */
 	public static void addElementToCSV(Element element, String path) {
 		
 		List<Element> elements = CSVToElement(path);
@@ -251,18 +305,6 @@ public class Element extends Observable {
 		}
 	
 	}
-	
-	public static int nbElement(String path) {
-		
-		int nb = 0;
-		
-		for (@SuppressWarnings("unused") CSVRecord parser : CSVUtils.getReader(path)) {
-			
-			nb++;
-		}
-		
-		return nb;
-	}
     
     @Override
 	public String toString() {
@@ -270,5 +312,4 @@ public class Element extends Observable {
 		return "Element [id=" + id + ", quantite=" + quantite + ", nom=" + nom + ", unite=" + unite + ", prixAchat=" + prixAchat
 				+ ", prixVente=" + prixVente + "]";
 	}
- 
 }

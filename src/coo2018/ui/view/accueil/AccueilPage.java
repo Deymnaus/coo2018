@@ -6,6 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author Andréa Christophe
+ *
+ */
 public class AccueilPage extends Application {
 	
 	public static void main(String[] args) {

@@ -4,12 +4,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.time.LocalDate;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 
+/**
+ * 
+ * @author Andréa Christophe
+ *
+ */
 public class CSVUtils {
 
 	/**
@@ -57,34 +61,5 @@ public class CSVUtils {
 		 }
 		
 		return printer;
-	}
-	
-	public static void main(String[] args) {
-		
-		//CSVParser reader = getReader("test.csv");
-		CSVPrinter printer = getPrinter("test.csv");
-		
-		try {
-			
-			 printer.printRecord("id", "userName", "firstName", "lastName", "birthday");
-		     printer.printRecord(1, "john73", "John", "Doe", LocalDate.of(1973, 9, 15));
-		     printer.println();
-		     printer.printRecord(2, "mary", "Mary", "Meyer", LocalDate.of(1985, 3, 29));
-		     System.out.println("OK");
-		     printer.close();
-			
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
-		
-		/*try (CSVPrinter printer = new CSVPrinter(new FileWriter("csv.csv"), CSVFormat.EXCEL)) {
-		     printer.printRecord("id", "userName", "firstName", "lastName", "birthday");
-		     printer.printRecord(1, "john73", "John", "Doe", LocalDate.of(1973, 9, 15));
-		     printer.println();
-		     printer.printRecord(2, "mary", "Mary", "Meyer", LocalDate.of(1985, 3, 29));
-		 } catch (IOException ex) {
-		     ex.printStackTrace();
-		 }*/
 	}
 }

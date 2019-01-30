@@ -13,6 +13,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author Andréa Christophe
+ *
+ */
 public class AccueilController implements Initializable {
 
 	@FXML

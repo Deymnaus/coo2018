@@ -16,6 +16,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author Andréa Christophe
+ *
+ */
 public class ChaineDetailController implements Initializable {
 
 	private ObservableList<Element> elements = FXCollections.observableArrayList();

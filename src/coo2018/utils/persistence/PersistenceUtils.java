@@ -7,6 +7,11 @@ import org.apache.commons.csv.CSVRecord;
 
 import coo2018.utils.csv.CSVUtils;
 
+/**
+ * 
+ * @author Andréa Christophe
+ *
+ */
 public class PersistenceUtils {
 	
 	/**
