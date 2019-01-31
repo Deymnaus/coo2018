@@ -116,26 +116,7 @@ public class ElementController implements Initializable {
 		
 		this.openFile.setOnAction(keyEvent -> {
 
-			try {
-				
-				FileChooser fileChooser = new FileChooser();
-				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
-				fileChooser.getExtensionFilters().add(extFilter);
-				File file = fileChooser.showOpenDialog(this.stage);
-				
-				Path.savePath(Path.ELEMENT, file.getAbsolutePath());
-				
-				this.elements.clear();
-				this.elements.addAll(Element.CSVToElement(file.getAbsolutePath()));
-				
-				this.table.getItems().clear();
-				this.table.getItems().addAll(this.elements);
-				
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-			}
-			
+			openFile();
 		});
 		
 		
@@ -217,6 +198,29 @@ public class ElementController implements Initializable {
 			}
 			this.table.getSelectionModel().getSelectedItems().forEach(this.table.getItems()::remove);
 		});
+	}
+
+	private void openFile() {
+		
+		try {
+			
+			FileChooser fileChooser = new FileChooser();
+			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+			fileChooser.getExtensionFilters().add(extFilter);
+			File file = fileChooser.showOpenDialog(this.stage);
+			
+			Path.savePath(Path.ELEMENT, file.getAbsolutePath());
+			
+			this.elements.clear();
+			this.elements.addAll(Element.CSVToElement(file.getAbsolutePath()));
+			
+			this.table.getItems().clear();
+			this.table.getItems().addAll(this.elements);
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
 	}
 
 	/**
