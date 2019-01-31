@@ -13,7 +13,7 @@ import coo2018.model.Chaine;
 public class ChaineEvent implements Observer {
 
 	/**
-	 * 
+	 * Message de l'observer
 	 */
 	@Override
 	public void update(Observable observable, Object message) {

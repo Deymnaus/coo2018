@@ -10,8 +10,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
@@ -58,18 +56,6 @@ public class ChaineDetailController implements Initializable {
 		});
 	}
 
-	/*
-	 * affiche un message d'alerte
-	 */
-	public void messageAlert() {
-
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Information");
-		alert.setHeaderText(null);
-		alert.setContentText("Les champs n'ont pas été correctement remplis !");
-		alert.showAndWait();
-	}
-	
 	public ObservableList<Element> getElements() {
 		return elements;
 	}

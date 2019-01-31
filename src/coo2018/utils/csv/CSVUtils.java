@@ -18,7 +18,7 @@ public class CSVUtils {
 
 	/**
 	 * 
-	 * @param path
+	 * @param path (chemin vers le fichier)
 	 * @return CSVParser object
 	 * @throws Exception
 	 */
@@ -43,7 +43,7 @@ public class CSVUtils {
 	
 	/**
 	 * 
-	 * @param path
+	 * @param path (chemin vers le fichier)
 	 * @return CSVPrinter object
 	 * @throws Exception
 	 */

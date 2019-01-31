@@ -1,11 +1,5 @@
 package coo2018.utils.rooting;
 
-import java.io.IOException;
-
-import org.apache.commons.csv.CSVPrinter;
-
-import coo2018.utils.csv.CSVUtils;
-
 /**
  * 
  * @author Andréa Christophe
@@ -33,38 +27,9 @@ public enum Route {
      
     /**
      * 
-     * @return
+     * @return path (chemin vers le fichier)
      */
     public String getPath() {  
         return  this.path ;  
-    }
-    
-    /**
-     * 
-     * @param path
-     */
-    public void savePathElement(String path) {
-    	
-    	String chainePath = getPath();
-		CSVPrinter printer = CSVUtils.getPrinter("values.csv");
-		
-		try {
-			
-			printer.printRecord("elementPath", "chainePath");
-		
-		} catch (IOException e1) {
-
-			e1.printStackTrace();
-		}
-		
-		try {
-			
-			printer.printRecord(path, chainePath);
-			printer.close();
-			
-		} catch (IOException ex) {
-
-			ex.printStackTrace();
-		}
     }
 }

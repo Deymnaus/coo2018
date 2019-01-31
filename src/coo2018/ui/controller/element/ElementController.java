@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import coo2018.model.Element;
+import coo2018.utils.message.MessageUtils;
 import coo2018.utils.persistence.Path;
 import coo2018.utils.rooting.Route;
 import coo2018.utils.rooting.RoutingUtils;
@@ -13,7 +14,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -66,11 +66,14 @@ public class ElementController implements Initializable {
 	private Button bSupprimer;
 	
 	
+	/**
+	 * Ajoute un élément au tableau et au fichier CSV via les champs du formulaire
+	 */
 	public void addElementToList() {
 
 		if (isChampValid()) {
 
-			// créer un élément avec les champs du formulaire
+			// Créer un élément avec les champs du formulaire
 			Element element = new Element(
 					tfId.getText(), 
 					tfNom.getText(), 
@@ -80,18 +83,19 @@ public class ElementController implements Initializable {
 					Double.parseDouble(tfPrixVente.getText())
 				);
 
-			// rajoute cet objet dans la liste des éléments
+			// Rajoute cet objet dans la liste des éléments
 			ObservableList<Element> elementObservable = this.table.getItems();
 			elementObservable.add(element);
 
 			this.table.setItems(elementObservable);
 			clearTextField();
 
+			// On rajoute l'élément dans le fichier CSV
 			Element.addElementToCSV(element, Path.ELEMENT.getPath());
 
 		} else {
 
-			messageAlert();
+			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Le fichier que vous essayez de charger contient des éléments non présent dans le fichier des éléments actuel");
 		}
 	}		
 
@@ -100,6 +104,7 @@ public class ElementController implements Initializable {
 					
 		String res = Path.ELEMENT.getPath();
 		
+		// Si l'utilisateur n'a jamais renseigné de fichier CSV
 		if (!res.equals("")) {
 			
 			this.elements.clear();
@@ -133,12 +138,15 @@ public class ElementController implements Initializable {
 			
 		});
 		
+		
+		/*
+		 * Événements liés au boutons de l'interface
+		 */
 		this.bRetour.setOnAction(actionEvent -> {
 
 			RoutingUtils.goTo(actionEvent, Route.ACCUEIL);
 		});
 
-		// événements sur les composants du formulaire
 		this.tfId.setOnKeyPressed(keyEvent -> {
 
 			if (keyEvent.getCode().equals(KeyCode.ENTER))
@@ -211,20 +219,8 @@ public class ElementController implements Initializable {
 		});
 	}
 
-	/*
-	 * affiche un message d'alerte
-	 */
-	public void messageAlert() {
-
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Information");
-		alert.setHeaderText(null);
-		alert.setContentText("Les champs n'ont pas été correctement remplis !");
-		alert.showAndWait();
-	}
-
-	/*
-	 * remet la valeur des champs à nul
+	/**
+	 * Remet la valeur des champs du formulaire à defaut 
 	 */
 	public void clearTextField() {
 
@@ -236,8 +232,8 @@ public class ElementController implements Initializable {
 		this.tfPrixVente.setText("");
 	}
 
-	/*
-	 * retourne vrai si tout les champs sont valides
+	/**
+	 * @return true si tout les champs du formulaire sont valides
 	 */
 	public boolean isChampValid() {
 
@@ -245,7 +241,6 @@ public class ElementController implements Initializable {
 				|| this.tfUnite.getText().isEmpty() || this.tfPrixAchat.getText().isEmpty()
 				|| this.tfPrixVente.getText().isEmpty()) ? false : true;
 	}
-
 
 	Stage stage;
 

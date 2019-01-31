@@ -18,6 +18,9 @@ public class AccueilPage extends Application {
 		launch(args);
 	}
 	
+	/**
+	 * Créer et charge la page d'accueil
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		

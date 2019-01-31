@@ -18,7 +18,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -71,22 +70,29 @@ public class ChaineController implements Initializable {
 		
 		if (!res.equals("")) {
 			
+			// On clear la liste de chaînes (pour ajouter les nouveaux objets)  
 			this.chaines.clear();
 			this.chaines.addAll(Chaine.CSVToChaine(res));
 			
+			// On clear la tableview et on ajoute les nouveaux objets 
 			this.table.getItems().clear();
 			this.table.getItems().addAll(this.chaines);
 		}
 		
+		// Au click sur Fichier > Ouvrir 
 		this.openFile.setOnAction(keyEvent -> {
 
 			try {
 				
+				// On créer un FileChooser pour choisir un fichier dans l'ordinateur 
 				FileChooser fileChooser = new FileChooser();
+				
+				// Les fichiers sélectionner ne seront que du type ".csv"
 				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
 				fileChooser.getExtensionFilters().add(extFilter);
 				File file = fileChooser.showOpenDialog(this.stage);
 					
+				// Si le fichier est valide (CF : commentaires de la méthode isValide())
 				if (isValide()) {
 					
 					Path.savePath(Path.CHAINE, file.getAbsolutePath());
@@ -217,12 +223,12 @@ public class ChaineController implements Initializable {
 
 		} else {
 
-			messageAlert();
+			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Les champs ne sont pas valides.");
 		}
 	}	
 	
-	/*
-	 * remet la valeur des champs à nul
+	/**
+	 * Remet la valeur des champs du formulaire à defaut 
 	 */
 	public void clearTextField() {
 
@@ -230,30 +236,24 @@ public class ChaineController implements Initializable {
 		this.tfNom.setText("");
 		this.tfNiveauActivation.setText("");	}
 
-	/*
-	 * retourne vrai si tout les champs sont valides
+	/**
+	 * @return true si tout les champs du formulaire sont valides
 	 */
 	public boolean isChampValid() {
 
 		return (this.tfId.getText().isEmpty() || this.tfNom.getText().isEmpty() || this.tfNiveauActivation.getText().isEmpty()) ? false : true;
 	}
-
-	/*
-	 * affiche un message d'alerte
-	 */
-	public void messageAlert() {
-
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Information");
-		alert.setHeaderText(null);
-		alert.setContentText("Les champs n'ont pas été correctement remplis !");
-		alert.showAndWait();
-	}
 	
+	/**
+	 * Une fichier chaine.csv est valide si tout les éléments en entrées/sorties des chaînes sont présent dans le fichier elements.csv
+	 * 
+	 * @return
+	 */
 	public boolean isValide() {
 		
 		boolean res = true;
 		
+		// On parcours les chaînes pour tester si les éléments en entrées/sorties des chaînes sont bien présent dans le fichier element.csv
 		for (Chaine chaine : Chaine.CSVToChaine(Path.CHAINE.getPath())) {
 			
 			System.out.println("Chaine :\nElements entrée :");
