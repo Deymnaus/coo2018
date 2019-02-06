@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import coo2018.model.Chaine;
 import coo2018.model.Element;
+import coo2018.ui.IActionFormulaire;
 import coo2018.utils.message.MessageUtils;
 import coo2018.utils.persistence.Path;
 import coo2018.utils.persistence.PersistenceUtils;
@@ -33,7 +34,7 @@ import javafx.stage.Stage;
  * @author Andréa Christophe
  *
  */
-public class ChaineController implements Initializable {
+public class ChaineController implements Initializable, IActionFormulaire {
 
 	private ObservableList<Chaine> chaines = FXCollections.observableArrayList();
 
@@ -291,6 +292,44 @@ public class ChaineController implements Initializable {
 
 	void setStage(Stage stg) { 
 		stage = stg;
+	}
+
+	@Override
+	public void addToList() throws Exception {
+		
+		if (isChampValid()) {
+
+			// créer un élément avec les champs du formulaire
+			Chaine chaine = new Chaine(
+					tfId.getText(), 
+					tfNom.getText(), 
+					Integer.parseInt(tfNiveauActivation.getText())
+				);
+
+			// rajoute cet objet dans la liste des éléments
+			ObservableList<Chaine> chaineObservable = this.table.getItems();
+			chaineObservable.add(chaine);
+
+			this.table.setItems(chaineObservable);
+			clearTextField();
+
+			Chaine.addChaineToCSV(chaine, Path.CHAINE.getPath());
+
+		} else {
+
+			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Les champs ne sont pas valides.");
+		}
+	}
+
+	@Override
+	public void removeToList() throws Exception {
+		
+		try {
+			Chaine.removeChaineToCSV(this.table.getSelectionModel().getSelectedItem().getId(), Path.CHAINE.getPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.table.getSelectionModel().getSelectedItems().forEach(this.table.getItems()::remove);
 	}
 
 }
