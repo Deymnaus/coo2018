@@ -114,15 +114,15 @@ public class ElementController implements Initializable {
 			this.table.getItems().addAll(this.elements);
 		}
 		
+
+		/*
+		 * Événements liés au boutons de l'interface
+		 */
 		this.openFile.setOnAction(keyEvent -> {
 
 			openFile();
 		});
 		
-		
-		/*
-		 * Événements liés au boutons de l'interface
-		 */
 		this.bRetour.setOnAction(actionEvent -> {
 
 			RoutingUtils.goTo(actionEvent, Route.ACCUEIL);
