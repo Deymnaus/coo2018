@@ -10,6 +10,7 @@ import org.apache.commons.csv.CSVPrinter;
 
 import coo2018.model.event.ChaineEvent;
 import coo2018.utils.csv.CSVUtils;
+import coo2018.utils.csv.IActionCSV;
 import coo2018.utils.persistence.Path;
 
 /**
@@ -17,7 +18,7 @@ import coo2018.utils.persistence.Path;
  * @author Andréa Christophe
  *
  */
-public class Chaine extends Observable {
+public class Chaine extends Observable implements IActionCSV<Chaine> {
 
 	private String id;
 	private String nom;
@@ -391,5 +392,23 @@ public class Chaine extends Observable {
 		}
 		
 		return res;
+	}
+
+	@Override
+	public List<Chaine> toCSV(String path) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addToCSV(Chaine chaine, String path) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeToCSV(String id, String path) throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 }

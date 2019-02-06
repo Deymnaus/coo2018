@@ -6,8 +6,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import coo2018.model.Element;
+import coo2018.ui.IActionFormulaire;
 import coo2018.utils.message.MessageUtils;
 import coo2018.utils.persistence.Path;
+import coo2018.utils.persistence.PersistenceUtils;
 import coo2018.utils.rooting.Route;
 import coo2018.utils.rooting.RoutingUtils;
 import javafx.collections.FXCollections;
@@ -28,7 +30,7 @@ import javafx.stage.Stage;
  * @author Andréa Christophe
  *
  */
-public class ElementController implements Initializable {
+public class ElementController implements Initializable, IActionFormulaire {
 
 	private ObservableList<Element> elements = FXCollections.observableArrayList();
 
@@ -209,7 +211,7 @@ public class ElementController implements Initializable {
 			fileChooser.getExtensionFilters().add(extFilter);
 			File file = fileChooser.showOpenDialog(this.stage);
 			
-			Path.savePath(Path.ELEMENT, file.getAbsolutePath());
+			PersistenceUtils.savePath(Path.ELEMENT, file.getAbsolutePath());
 			
 			this.elements.clear();
 			this.elements.addAll(Element.CSVToElement(file.getAbsolutePath()));
@@ -250,6 +252,49 @@ public class ElementController implements Initializable {
 
 	void setStage(Stage stg) {
 		stage = stg;
+	}
+
+	@Override
+	public void addToList() throws Exception {
+		
+		if (isChampValid()) {
+
+			// Créer un élément avec les champs du formulaire
+			Element element = new Element(
+					tfId.getText(), 
+					tfNom.getText(), 
+					Integer.parseInt(tfQuantite.getText()), 
+					tfUnite.getText(),
+					Double.parseDouble(tfPrixAchat.getText()), 
+					Double.parseDouble(tfPrixVente.getText())
+				);
+
+			// Rajoute cet objet dans la liste des éléments
+			ObservableList<Element> elementObservable = this.table.getItems();
+			elementObservable.add(element);
+
+			this.table.setItems(elementObservable);
+			clearTextField();
+
+			// On rajoute l'élément dans le fichier CSV
+			Element.addElementToCSV(element, Path.ELEMENT.getPath());
+
+		} else {
+
+			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Le fichier que vous essayez de charger contient des éléments non présent dans le fichier des éléments actuel");
+		}
+	}
+
+	@Override
+	public void removeToList() throws Exception {
+		
+		try {
+			Element.removeElementToCSV(this.table.getSelectionModel().getSelectedItem().getId(), Path.ELEMENT.getPath());
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		this.table.getSelectionModel().getSelectedItems().forEach(this.table.getItems()::remove);
 	}
 
 }
