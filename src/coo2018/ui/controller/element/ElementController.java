@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import coo2018.model.Element;
 import coo2018.utils.message.MessageUtils;
 import coo2018.utils.persistence.Path;
+import coo2018.utils.persistence.PersistenceUtils;
 import coo2018.utils.rooting.Route;
 import coo2018.utils.rooting.RoutingUtils;
 import javafx.collections.FXCollections;
@@ -209,7 +210,7 @@ public class ElementController implements Initializable {
 			fileChooser.getExtensionFilters().add(extFilter);
 			File file = fileChooser.showOpenDialog(this.stage);
 			
-			Path.savePath(Path.ELEMENT, file.getAbsolutePath());
+			PersistenceUtils.savePath(Path.ELEMENT, file.getAbsolutePath());
 			
 			this.elements.clear();
 			this.elements.addAll(Element.CSVToElement(file.getAbsolutePath()));

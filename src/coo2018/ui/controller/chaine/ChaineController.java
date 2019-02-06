@@ -9,6 +9,7 @@ import coo2018.model.Chaine;
 import coo2018.model.Element;
 import coo2018.utils.message.MessageUtils;
 import coo2018.utils.persistence.Path;
+import coo2018.utils.persistence.PersistenceUtils;
 import coo2018.utils.rooting.Route;
 import coo2018.utils.rooting.RoutingUtils;
 import javafx.collections.FXCollections;
@@ -95,7 +96,7 @@ public class ChaineController implements Initializable {
 				// Si le fichier est valide (CF : commentaires de la méthode isValide())
 				if (isValide()) {
 					
-					Path.savePath(Path.CHAINE, file.getAbsolutePath());
+					PersistenceUtils.savePath(Path.CHAINE, file.getAbsolutePath());
 					
 					this.chaines.clear();
 					this.chaines.addAll(Chaine.CSVToChaine(file.getAbsolutePath()));
