@@ -11,13 +11,14 @@ import org.apache.commons.csv.CSVPrinter;
 
 import coo2018.model.event.ElementEvent;
 import coo2018.utils.csv.CSVUtils;
+import coo2018.utils.csv.IActionCSV;
  
 /**
  * 
  * @author Andréa Christophe
  *
  */
-public class Element extends Observable {
+public class Element extends Observable implements IActionCSV<Element> {
  
     private String id;
     private String nom;
@@ -311,5 +312,23 @@ public class Element extends Observable {
     	
 		return "Element [id=" + id + ", quantite=" + quantite + ", nom=" + nom + ", unite=" + unite + ", prixAchat=" + prixAchat
 				+ ", prixVente=" + prixVente + "]";
+	}
+
+	@Override
+	public List<Element> toCSV(String path) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addToCSV(Element object, String path) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeToCSV(String id, String path) throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 }
