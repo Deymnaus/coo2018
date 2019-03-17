@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ab83cd14-e576-4920-8329-ce9dd8e421d6" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/jfoenix_8_0_8.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/coo2018/ui/controller/accueil/AccueilController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/coo2018/ui/controller/accueil/AccueilController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/coo2018/ui/controller/chaine/ChaineController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/coo2018/ui/controller/chaine/ChaineController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/coo2018/ui/controller/element/ElementController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/coo2018/ui/controller/element/ElementController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/coo2018/ui/view/accueil/AccueilPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/coo2018/ui/view/accueil/AccueilPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/coo2018/ui/view/accueil/AccueilPresenter.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/coo2018/ui/view/accueil/AccueilPresenter.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/coo2018/ui/view/chaine/ChainePresenter.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/coo2018/ui/view/chaine/ChainePresenter.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/coo2018/ui/view/element/ElementPresenter.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/coo2018/ui/view/element/ElementPresenter.fxml" afterDir="false" />
-    </list>
+    <list default="true" id="ab83cd14-e576-4920-8329-ce9dd8e421d6" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -98,7 +89,7 @@
       <file leaf-file-name="AccueilController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/coo2018/ui/controller/accueil/AccueilController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
+            <state relative-caret-position="268">
               <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
             </state>
           </provider>
@@ -392,7 +383,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="812" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -403,8 +393,8 @@
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.33986014" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32867134" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.33986014" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32867134" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26466382" />
@@ -584,7 +574,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/coo2018/ui/controller/accueil/AccueilController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
+        <state relative-caret-position="268">
           <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
         </state>
       </provider>
