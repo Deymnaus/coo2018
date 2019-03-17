@@ -33,7 +33,7 @@ public class ElementController implements Initializable {
 	private ObservableList<Element> elements = FXCollections.observableArrayList();
 
 	@FXML
-	private MenuItem openFile;
+	private Button openFile;
 
 	@FXML
 	private TableView<Element> table;
@@ -55,9 +55,7 @@ public class ElementController implements Initializable {
 
 	@FXML
 	private TextField tfPrixVente;
-	
-	@FXML
-	private Button bRetour;
+
 
 	@FXML
 	private Button bAjouter;
@@ -142,10 +140,6 @@ public class ElementController implements Initializable {
 		/*
 		 * Événements liés au boutons de l'interface
 		 */
-		this.bRetour.setOnAction(actionEvent -> {
-
-			RoutingUtils.goTo(actionEvent, Route.ACCUEIL);
-		});
 
 		this.tfId.setOnKeyPressed(keyEvent -> {
 
