@@ -14,15 +14,23 @@ import coo2018.utils.csv.CSVUtils;
  */
 public class PersistenceUtils {
 	
-	/**
-	 * TODO :
-	 * RÉDUIRE CETTE PUTAIN DE CLASSE PAS ASSEZ GÉNÉRIQUE
-	 */
+	public static void savePath(Path fileToWrite, String path) {
+		   
+		String otherPath = "";
 
-	public static void saveFilePathElement(String path) {
+		switch (fileToWrite) {
 		
-		String chainePath = PersistenceUtils.filePathElement();
-		CSVPrinter printer = CSVUtils.getPrinter("values.csv");
+		case ELEMENT:
+			otherPath = Path.CHAINE.getPath();
+			break;
+		case CHAINE:
+			otherPath = Path.ELEMENT.getPath();
+			break;
+		default:
+			break;
+	   }
+	   
+	   CSVPrinter printer = CSVUtils.getPrinter("values.csv");
 		
 		try {
 			
@@ -35,64 +43,23 @@ public class PersistenceUtils {
 		
 		try {
 			
-			printer.printRecord(path, chainePath);
+			switch (fileToWrite) {
+			
+			case ELEMENT:
+				printer.printRecord(path, otherPath);
+				break;
+			case CHAINE:
+				printer.printRecord(otherPath, path);
+				break;
+			default:
+				break;
+		   }
+			
 			printer.close();
 			
 		} catch (IOException ex) {
 
 			ex.printStackTrace();
 		}
-	
-	}
-	
-	public static void saveFilePathChaine(String path) {
-		
-		String elementPath = PersistenceUtils.filePathElement();
-		CSVPrinter printer = CSVUtils.getPrinter("values.csv");
-		
-		try {
-			
-			printer.printRecord("elementPath", "chainePath");
-		
-		} catch (IOException e1) {
-
-			e1.printStackTrace();
-		}
-		
-		try {
-						
-			printer.printRecord(elementPath, path);
-			printer.close();
-			
-		} catch (IOException ex) {
-
-			ex.printStackTrace();
-		}
-	
-	}
-	
-	public static String filePathElement() {
-		
-		String res = "";
-		
-		for(CSVRecord parser : CSVUtils.getReader("values.csv")) {
-			
-			res = parser.toMap().get("elementPath");
-		}
-		
-		
-		return res;
-	}
-	
-	public static String filePathChaine() {
-		
-		String res = "";
-		
-		for(CSVRecord parser : CSVUtils.getReader("values.csv")) {
-			
-			res = parser.toMap().get("chainePath");
-		}
-		
-		return res;
 	}
 }
