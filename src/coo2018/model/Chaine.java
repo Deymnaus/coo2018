@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Observable;
 
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 
 import coo2018.model.event.ChaineEvent;
 import coo2018.utils.csv.CSVUtils;
@@ -197,13 +198,12 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 	 * @param path
 	 * @return
 	 */
-	public static List<Chaine> CSVToChaine(String path) {
+	public static List<Chaine> CSVToChaine(String path) throws Exception {
 		
 		List<Chaine> chaines = new ArrayList<Chaine>();
-		
 		Map<String, Element> elements = Element.CSVToElementMap(Path.ELEMENT.getPath());
 		
-		CSVUtils.getReader(path).forEach(csvRecord -> {
+		for(CSVRecord csvRecord : CSVUtils.getReader(path)) {
 						
 			List<Element> elementsEntree = new ArrayList<Element>();
 			List<Element> elementsSortie = new ArrayList<Element>();
@@ -212,9 +212,13 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 			
 			// ex : E005&2;E003&3 donnera un tableau avec en pos0 : E005&2 et en pos1 : E003&3
 			System.out.println(csvRecord.toMap().get("entree"));
+			
+			// Si les elements en entrée sont > à 1
 			if (csvRecord.toMap().get("entree").contains(";")) {
 
 				elementsEntreeCSV = csvRecord.toMap().get("entree").split(";");
+				
+			// Si il n'y a qu'un seul element en entrée
 			} else {
 				
 				elementsEntreeCSV[0] = csvRecord.toMap().get("entree");
@@ -224,7 +228,18 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 			
 				// ex : E005&2 donnera un tableau avec en pos0 : E005 et en pos1 : 3
 				String[] identifiantQuantiteElementEntree = elementsEntreeCSV[i].split("&");
-				elementsEntree.add(elements.get(identifiantQuantiteElementEntree[0]));
+				
+				// on essaie de récupérer l'element en fonction de son identifiant
+				if (elements.get(identifiantQuantiteElementEntree[0]) == null) {
+					
+					throw new Exception("L'element n°" + identifiantQuantiteElementEntree[0] + " de cette chaîne n'existe pas dans le fichier element");
+					
+				} else {
+				
+					elements.get(identifiantQuantiteElementEntree[0]).setQuantite(Integer.parseInt(identifiantQuantiteElementEntree[1]));
+					elementsEntree.add(elements.get(identifiantQuantiteElementEntree[0]));
+				}
+				
 			}
 			
 			
@@ -241,7 +256,16 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 			
 				// ex : E005&2 donnera un tableau avec en pos0 : E005 et en pos1 : 3
 				String[] identifiantQuantiteElementSortie = elementsSortieCSV[i].split("&");
-				elementsSortie.add(elements.get(identifiantQuantiteElementSortie[0]));
+				
+				if (elements.get(identifiantQuantiteElementSortie[0]) == null) {
+					
+					throw new Exception("L'element n°" + identifiantQuantiteElementSortie[0] + " de cette chaîne n'existe pas dans le fichier element");
+					
+				} else {
+					
+					elements.get(identifiantQuantiteElementSortie[0]).setQuantite(Integer.parseInt(identifiantQuantiteElementSortie[1]));
+					elementsSortie.add(elements.get(identifiantQuantiteElementSortie[0]));
+				}
 			}
 			
 			Chaine chaine = new Chaine(
@@ -253,7 +277,7 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 				);
 			
 			chaines.add(chaine);
-		});
+		}
 		
 		return chaines;
 	}
@@ -274,50 +298,49 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 	 * 
 	 * @param id
 	 * @param path
-	 * @throws IOException
+	 * @throws Exception 
 	 */
-	public static void removeChaineToCSV(String id, String path) throws IOException {
+	public static void removeChaineToCSV(String id, String path) throws Exception {
 		
-		List<Chaine> chaine = CSVToChaine(path);
-		CSVPrinter printer = CSVUtils.getPrinter(path);
+		List<Chaine> chaine = new ArrayList<Chaine>();
 		
 		try {
-			
+			chaine = CSVToChaine(path);
+			CSVPrinter printer = CSVUtils.getPrinter(path);
 			printer.printRecord("id", "nom", "niveauActivation", "entree", "sortie");
-		
-		} catch (IOException e1) {
-
-			e1.printStackTrace();
-		}
-		
-		chaine.forEach(c -> {
-			
-			System.out.println(c.toString());
-			
-			try {
+			chaine.forEach(c -> {
 				
-				// Remplacer par getId()
-				if (!c.getId().equals(id)) {
+				System.out.println(c.toString());
+				
+				try {
 					
-					printer.printRecord(c.getId(), c.getNom(), c.getNiveauActivation(), c.elementsEntreeToString(), c.elementsSortieToString());
-				}
-				
-				
-			} catch (IOException ex) {
+					// Remplacer par getId()
+					if (!c.getId().equals(id)) {
+						
+						printer.printRecord(c.getId(), c.getNom(), c.getNiveauActivation(), c.elementsEntreeToString(), c.elementsSortieToString());
+					}
+					
+					
+				} catch (IOException ex) {
 
-				ex.printStackTrace();
-			}
-		});
-		
-		printer.close();
+					ex.printStackTrace();
+				}
+			});
+			printer.close();
+			
+		} catch (Exception e) {
+			
+			throw new Exception("Erreur dans la suppression de l'élément " + id);
+		}		
 	}
 	
 	/**
 	 * 
 	 * @param chaine
 	 * @param path
+	 * @throws Exception 
 	 */
-	public static void addChaineToCSV(Chaine chaine, String path) {
+	public static void addChaineToCSV(Chaine chaine, String path) throws Exception {
 		
 		List<Chaine> chaines = CSVToChaine(path);
 		CSVPrinter printer = CSVUtils.getPrinter(path);
@@ -395,13 +418,19 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 	}
 
 	@Override
-	public List<Chaine> toCSV(String path) {
+	public String toString() {
+		return "Chaine [id=" + id + ", nom=" + nom + ", niveauActivation=" + niveauActivation + ", elementsEntree="
+				+ elementsEntree + ", elementsSortie=" + elementsSortie + "]";
+	}
+
+	@Override
+	public List<Chaine> toList(String path) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void addToCSV(Chaine chaine, String path) {
+	public void addToFile(Chaine chaine, String path) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -410,5 +439,21 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 	public void removeToCSV(String id, String path) throws IOException {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public static void main(String[] args) {
+		
+		List<Chaine> chaines = null;
+		try {
+			chaines = Chaine.CSVToChaine("chaines.csv");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("Longueur : " + chaines.size() + "\nElements : ");
+		chaines.forEach(chaine -> {
+			System.out.println(chaine.toString());
+		});
 	}
 }

@@ -33,6 +33,8 @@ import javafx.stage.Stage;
 public class ElementController implements Initializable, IActionFormulaire {
 
 	private ObservableList<Element> elements = FXCollections.observableArrayList();
+	
+	private Stage stage;
 
 	@FXML
 	private MenuItem openFile;
@@ -67,40 +69,6 @@ public class ElementController implements Initializable, IActionFormulaire {
 	@FXML
 	private Button bSupprimer;
 	
-	
-	/**
-	 * Ajoute un élément au tableau et au fichier CSV via les champs du formulaire
-	 */
-	public void addElementToList() {
-
-		if (isChampValid()) {
-
-			// Créer un élément avec les champs du formulaire
-			Element element = new Element(
-					tfId.getText(), 
-					tfNom.getText(), 
-					Integer.parseInt(tfQuantite.getText()), 
-					tfUnite.getText(),
-					Double.parseDouble(tfPrixAchat.getText()), 
-					Double.parseDouble(tfPrixVente.getText())
-				);
-
-			// Rajoute cet objet dans la liste des éléments
-			ObservableList<Element> elementObservable = this.table.getItems();
-			elementObservable.add(element);
-
-			this.table.setItems(elementObservable);
-			clearTextField();
-
-			// On rajoute l'élément dans le fichier CSV
-			Element.addElementToCSV(element, Path.ELEMENT.getPath());
-
-		} else {
-
-			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Le fichier que vous essayez de charger contient des éléments non présent dans le fichier des éléments actuel");
-		}
-	}		
-
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 					
@@ -133,61 +101,55 @@ public class ElementController implements Initializable, IActionFormulaire {
 		this.tfId.setOnKeyPressed(keyEvent -> {
 
 			if (keyEvent.getCode().equals(KeyCode.ENTER))
-				addElementToList();
+				addToList();
 		});
 
 		this.tfNom.setOnKeyPressed(keyEvent -> {
 
 			if (keyEvent.getCode().equals(KeyCode.ENTER))
-				addElementToList();
+				addToList();
 		});
 
 		this.tfQuantite.setOnKeyPressed(keyEvent -> {
 
 			if (keyEvent.getCode().equals(KeyCode.ENTER))
-				addElementToList();
+				addToList();
 		});
 
 		this.tfUnite.setOnKeyPressed(keyEvent -> {
 
 			if (keyEvent.getCode().equals(KeyCode.ENTER))
-				addElementToList();
+				addToList();
 		});
 
 		this.tfPrixAchat.setOnKeyPressed(keyEvent -> {
 
 			if (keyEvent.getCode().equals(KeyCode.ENTER))
-				addElementToList();
+				addToList();
 		});
 
 		this.tfPrixVente.setOnKeyPressed(keyEvent -> {
 
 			if (keyEvent.getCode().equals(KeyCode.ENTER))
-				addElementToList();
+				addToList();
 		});
 
 		this.bAjouter.setOnKeyPressed(keyEvent -> {
 
 			if (keyEvent.getCode().equals(KeyCode.ENTER))
-				addElementToList();
+				addToList();
 		});
 
 		this.bAjouter.setOnAction(actionEvent -> {
 
-			addElementToList();
+			addToList();
 		});
 
 		this.bSupprimer.setOnKeyPressed(keyEvent -> {
 
 			if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 
-				try {
-					Element.removeElementToCSV(this.table.getSelectionModel().getSelectedItem().getId(), Path.ELEMENT.getPath());
-				} catch (IOException e) {
-
-					e.printStackTrace();
-				}
-				this.table.getSelectionModel().getSelectedItems().forEach(this.table.getItems()::remove);
+				removeToList();
 			}
 		});
 
@@ -201,7 +163,82 @@ public class ElementController implements Initializable, IActionFormulaire {
 			this.table.getSelectionModel().getSelectedItems().forEach(this.table.getItems()::remove);
 		});
 	}
+	
+	/**
+	 * Remet la valeur des champs du formulaire à defaut 
+	 */
+	@Override
+	public void clearTextField() {
 
+		this.tfId.setText("");
+		this.tfNom.setText("");
+		this.tfQuantite.setText("");
+		this.tfUnite.setText("");
+		this.tfPrixAchat.setText("");
+		this.tfPrixVente.setText("");
+	}
+
+	
+	/**
+	 * @return true si tout les champs du formulaire sont valides
+	 */
+	@Override
+	public boolean isChampValid() {
+
+		return (this.tfId.getText().isEmpty() || this.tfNom.getText().isEmpty() || this.tfQuantite.getText().isEmpty()
+				|| this.tfUnite.getText().isEmpty() || this.tfPrixAchat.getText().isEmpty()
+				|| this.tfPrixVente.getText().isEmpty()) ? false : true;
+	}
+
+	/**
+	 * Ajoute un élément au tableau et au fichier CSV via les champs du formulaire
+	 */
+	@Override
+	public void addToList() {
+		
+		if (isChampValid()) {
+
+			// Créer un élément avec les champs du formulaire
+			Element element = new Element(
+				tfId.getText(), 
+				tfNom.getText(), 
+				Integer.parseInt(tfQuantite.getText()), 
+				tfUnite.getText(),
+				Double.parseDouble(tfPrixAchat.getText()), 
+				Double.parseDouble(tfPrixVente.getText())
+			);
+
+			// Rajoute cet objet dans la liste des éléments
+			ObservableList<Element> elementObservable = this.table.getItems();
+			elementObservable.add(element);
+
+			this.table.setItems(elementObservable);
+			clearTextField();
+
+			// On rajoute l'élément dans le fichier CSV
+			Element.addElementToCSV(element, Path.ELEMENT.getPath());
+
+		} else {
+
+			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Le fichier que vous essayez de charger contient des éléments non présent dans le fichier des éléments actuel");
+		}
+	}
+
+	/**
+	 * Retire un élément au tableau et au fichier CSV
+	 */
+	@Override
+	public void removeToList() {
+		
+		try {
+			Element.removeElementToCSV(this.table.getSelectionModel().getSelectedItem().getId(), Path.ELEMENT.getPath());
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		this.table.getSelectionModel().getSelectedItems().forEach(this.table.getItems()::remove);
+	}
+	
 	private void openFile() {
 		
 		try {
@@ -221,80 +258,14 @@ public class ElementController implements Initializable, IActionFormulaire {
 			
 		} catch (Exception e) {
 			
-			e.printStackTrace();
+			// TODO : Faire des fichiers de LOG
+			MessageUtils.messageAlert(AlertType.ERROR, "Importation annulée", "Problème lors de l'importation de ");
 		}
 	}
-
-	/**
-	 * Remet la valeur des champs du formulaire à defaut 
-	 */
-	public void clearTextField() {
-
-		this.tfId.setText("");
-		this.tfNom.setText("");
-		this.tfQuantite.setText("");
-		this.tfUnite.setText("");
-		this.tfPrixAchat.setText("");
-		this.tfPrixVente.setText("");
-	}
-
-	/**
-	 * @return true si tout les champs du formulaire sont valides
-	 */
-	public boolean isChampValid() {
-
-		return (this.tfId.getText().isEmpty() || this.tfNom.getText().isEmpty() || this.tfQuantite.getText().isEmpty()
-				|| this.tfUnite.getText().isEmpty() || this.tfPrixAchat.getText().isEmpty()
-				|| this.tfPrixVente.getText().isEmpty()) ? false : true;
-	}
-
-	Stage stage;
-
+	
 	void setStage(Stage stg) {
+		
 		stage = stg;
-	}
-
-	@Override
-	public void addToList() throws Exception {
-		
-		if (isChampValid()) {
-
-			// Créer un élément avec les champs du formulaire
-			Element element = new Element(
-					tfId.getText(), 
-					tfNom.getText(), 
-					Integer.parseInt(tfQuantite.getText()), 
-					tfUnite.getText(),
-					Double.parseDouble(tfPrixAchat.getText()), 
-					Double.parseDouble(tfPrixVente.getText())
-				);
-
-			// Rajoute cet objet dans la liste des éléments
-			ObservableList<Element> elementObservable = this.table.getItems();
-			elementObservable.add(element);
-
-			this.table.setItems(elementObservable);
-			clearTextField();
-
-			// On rajoute l'élément dans le fichier CSV
-			Element.addElementToCSV(element, Path.ELEMENT.getPath());
-
-		} else {
-
-			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Le fichier que vous essayez de charger contient des éléments non présent dans le fichier des éléments actuel");
-		}
-	}
-
-	@Override
-	public void removeToList() throws Exception {
-		
-		try {
-			Element.removeElementToCSV(this.table.getSelectionModel().getSelectedItem().getId(), Path.ELEMENT.getPath());
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
-		this.table.getSelectionModel().getSelectedItems().forEach(this.table.getItems()::remove);
 	}
 
 }

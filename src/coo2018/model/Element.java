@@ -172,6 +172,19 @@ public class Element extends Observable implements IActionCSV<Element> {
         return this;
     }
     
+    public int decrementeQuantite(int pfQuantite) {
+    	
+    	System.out.println("Quantité actuelle : " + this.quantite + "... va être supprimé : " + pfQuantite);
+    	this.quantite -= pfQuantite;
+    	return this.quantite;
+    }
+    
+    public int incrementeQuantite(int pfQuantite) {
+    	
+    	this.quantite += pfQuantite;
+    	return this.quantite;
+    }
+    
     /**
      * 
      * @param path
@@ -315,13 +328,13 @@ public class Element extends Observable implements IActionCSV<Element> {
 	}
 
 	@Override
-	public List<Element> toCSV(String path) {
+	public List<Element> toList(String path) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void addToCSV(Element object, String path) {
+	public void addToFile(Element object, String path) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -331,4 +344,19 @@ public class Element extends Observable implements IActionCSV<Element> {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public static void clearCSV(String path) {
+		
+		CSVPrinter printer = CSVUtils.getPrinter(path);
+		
+		try {
+			
+			printer.printRecord("id", "nom", "quantite", "unite", "prixAchat", "prixVente");
+		
+		} catch (IOException e1) {
+
+			e1.printStackTrace();
+		}
+	}
+
 }

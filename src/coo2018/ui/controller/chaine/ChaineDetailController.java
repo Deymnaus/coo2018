@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
@@ -22,22 +23,23 @@ import javafx.stage.Stage;
 public class ChaineDetailController implements Initializable {
 
 	private ObservableList<Element> elements = FXCollections.observableArrayList();
-	public List<Element> tabElements = new ArrayList<Element>();;
+	public List<Element> tabElements = new ArrayList<Element>();
 			
 	@FXML
 	private TableView<Element> tableEntree;
 	
+	@FXML  
+	private TableColumn<Element, String> name;
+	
 	@FXML 
 	private Button bRetour;
 	
-//	public void ChaineDetailController(List<Element> entrants, List<Element> sortants) {
-//
-//		this.elements.addAll(entrants);
-//		this.tableEntree.getItems().addAll(this.elements);
-//	}
-	
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
+		
+		ObservableList<String> liste = FXCollections.observableArrayList();
+		
+		//this.name.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), liste));
 		
 		System.out.println("ELEMENT : " + this.tabElements.size());
 		this.tabElements.forEach(o -> {

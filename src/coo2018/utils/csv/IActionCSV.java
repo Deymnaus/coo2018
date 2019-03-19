@@ -16,9 +16,9 @@ public interface IActionCSV<T> {
 	/*
 	 * Définira les comportements face au CSV, implémenté dans le model
 	 */
-	public List<T> toCSV(String path);
+	public List<T> toList(String path);
 	
-	public void addToCSV(T object, String path);
+	public void addToFile(T object, String path);
 	
 	public void removeToCSV(String id, String path) throws IOException;
 }

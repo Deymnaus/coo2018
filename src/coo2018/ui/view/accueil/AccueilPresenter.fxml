@@ -5,41 +5,65 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coo2018.ui.controller.accueil.AccueilController">
+<AnchorPane style="-fx-background-color: #455A64;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coo2018.ui.controller.accueil.AccueilController">
    <children>
-      <MenuBar>
-        <menus>
-          <Menu mnemonicParsing="false" text="Aide">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-            <Menu mnemonicParsing="false" text="Paramètre">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="About" />
-               </items>
-            </Menu>
-        </menus>
-      </MenuBar>
-      <HBox alignment="CENTER" prefHeight="1000.0" spacing="50.0">
+      <VBox>
          <children>
-            <VBox alignment="CENTER">
+            <HBox>
                <children>
-                  <Button fx:id="bElement" mnemonicParsing="false" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #3F51B5;" text="Liste des éléments" textFill="WHITE" />
+                  <VBox maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                     <children>
+                        <MenuBar>
+                           <menus>
+                              <Menu mnemonicParsing="false" text="Aide">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="About" />
+                                 </items>
+                              </Menu>
+                              <Menu mnemonicParsing="false" text="Paramètre">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="About" />
+                                 </items>
+                              </Menu>
+                           </menus>
+                        </MenuBar>
+                        <HBox alignment="CENTER" spacing="50.0">
+                           <children>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Button fx:id="bElement" mnemonicParsing="false" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: white; -fx-text-fill: #333;" text="Liste des éléments" textFill="WHITE">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets bottom="100.0" left="100.0" top="100.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Button fx:id="bChaine" mnemonicParsing="false" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: white; -fx-text-fill: #333;" text="Chaines de production" textFill="WHITE">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Button>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets bottom="100.0" right="100.0" top="100.0" />
+                                 </HBox.margin>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
-            <VBox alignment="CENTER">
-               <children>
-                  <Button fx:id="bChaine" mnemonicParsing="false" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #3F51B5;" text="Chaines de production" textFill="WHITE">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets></Button>
-               </children>
-            </VBox>
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
    </children>
-</VBox>
+</AnchorPane>
