@@ -30,7 +30,6 @@ public class AccueilController implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		
 		this.bElement.setOnAction(actionEvent -> {
-
 			RoutingUtils.goTo(actionEvent, Route.ELEMENT);
 		});
 		

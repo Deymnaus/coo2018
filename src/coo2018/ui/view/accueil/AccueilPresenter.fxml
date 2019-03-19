@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
@@ -9,12 +16,26 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<<<<<<< HEAD
 <AnchorPane style="-fx-background-color: #455A64;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coo2018.ui.controller.accueil.AccueilController">
+=======
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="625.0" prefWidth="875.0" style="-fx-background-color: #484149;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coo2018.ui.controller.accueil.AccueilController">
+>>>>>>> branch 'master' of https://github.com/Deymnaus/coo2018.git
    <children>
+<<<<<<< HEAD
       <VBox>
+=======
+      <VBox layoutY="-1.0" prefHeight="625.0" prefWidth="245.0" style="-fx-background-color: #4F1858;">
+>>>>>>> branch 'master' of https://github.com/Deymnaus/coo2018.git
          <children>
+<<<<<<< HEAD
             <HBox>
+=======
+            <Pane prefHeight="100.0" prefWidth="407.0" style="-fx-background-color: #4A1453;">
+>>>>>>> branch 'master' of https://github.com/Deymnaus/coo2018.git
                <children>
+<<<<<<< HEAD
                   <VBox maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
                      <children>
                         <MenuBar>
@@ -61,9 +82,36 @@
                         </HBox>
                      </children>
                   </VBox>
+=======
+                  <Text fill="WHITE" layoutX="85.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ProdApp">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+>>>>>>> branch 'master' of https://github.com/Deymnaus/coo2018.git
                </children>
+<<<<<<< HEAD
             </HBox>
+=======
+               <VBox.margin>
+                  <Insets bottom="40.0" />
+               </VBox.margin>
+            </Pane>
+            <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" text="Importer des élements" textFill="WHITE" />
+            <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" text="Importer des chaines de production" textFill="WHITE" />
+            <Button fx:id="bElement" mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" text="Etat des stocks" textFill="WHITE" />
+            <Button fx:id="bChaine" mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" text="Simulation de la production" textFill="WHITE" />
+            <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" text="About" textFill="WHITE" />
+>>>>>>> branch 'master' of https://github.com/Deymnaus/coo2018.git
          </children>
       </VBox>
+<<<<<<< HEAD
+=======
+      <Text fill="WHITE" layoutX="245.0" layoutY="269.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue !" textAlignment="CENTER" wrappingWidth="628.123046875">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Text>
+>>>>>>> branch 'master' of https://github.com/Deymnaus/coo2018.git
    </children>
 </AnchorPane>

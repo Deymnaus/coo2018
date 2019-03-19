@@ -38,10 +38,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 	private Stage stage;
 
 	@FXML
-	private MenuItem openFile;
-	
-	@FXML
-	private Button bRetour;
+	private Button openFile;
 	
 	@FXML
 	private TableView<Chaine> table;
@@ -119,11 +116,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 			}
 			
 		});
-		
-		this.bRetour.setOnAction(actionEvent -> {
 
-			RoutingUtils.goTo(actionEvent, Route.ACCUEIL);
-		});
 		
 		// événements sur les composants du formulaire
 		this.tfId.setOnKeyPressed(keyEvent -> {
