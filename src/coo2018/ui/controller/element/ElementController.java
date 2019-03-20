@@ -90,18 +90,6 @@ public class ElementController implements Initializable, IActionFormulaire {
 
 			openFile();
 		});
-		
-<<<<<<< HEAD
-		this.bRetour.setOnAction(actionEvent -> {
-
-			RoutingUtils.goTo(actionEvent, Route.ACCUEIL);
-		});
-=======
-		
-		/*
-		 * Événements liés au boutons de l'interface
-		 */
->>>>>>> branch 'master' of https://github.com/Deymnaus/coo2018.git
 
 		this.tfId.setOnKeyPressed(keyEvent -> {
 

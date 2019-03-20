@@ -11,11 +11,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" style="-fx-background-color: #455A64;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coo2018.ui.controller.chaine.ChaineDetailController">
+<AnchorPane id="AnchorPane" prefHeight="402.0" prefWidth="323.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coo2018.ui.controller.chaine.ChaineDetailController">
 	<children>
       <VBox prefHeight="200.0" prefWidth="100.0">
          <children>
-            <Button fx:id="bRetour" mnemonicParsing="false" style="-fx-background-color: white;" text="Retour">
+            <Button fx:id="bRetour" mnemonicParsing="false" text="Retour">
                <VBox.margin>
                   <Insets left="10.0" top="10.0" />
                </VBox.margin>
@@ -26,7 +26,7 @@
                      <children>
                         <VBox alignment="CENTER">
                            <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Éléments en entrées" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Éléments en entrées" />
             						<TableView fx:id="tableEntree" style="-fx-background-color: #333;">
             							<columns>
             								<TableColumn prefWidth="135.0" text="Identifiant">
@@ -60,7 +60,7 @@
                         </VBox>
                         <VBox alignment="CENTER">
                            <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Éléments en entrées" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Éléments en entrées" />
                               <TableView fx:id="tableSortie" style="-fx-background-color: #333;">
                                  <columns>
                                     <TableColumn prefWidth="135.0" text="Identifiant">
@@ -98,7 +98,7 @@
                   </HBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button mnemonicParsing="false" style="-fx-background-color: white;" text="Lancer la production" />
+                        <Button mnemonicParsing="false" text="Lancer la production" />
                      </children>
                      <FlowPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
