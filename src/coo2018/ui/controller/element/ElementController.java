@@ -71,13 +71,12 @@ public class ElementController implements Initializable, IActionFormulaire {
 	public void initialize(URL url, ResourceBundle rb) {
 					
 		String res = Path.ELEMENT.getPath();
-		
-		// Si l'utilisateur n'a jamais renseigné de fichier CSV
-		if (!res.equals("")) {
-			
+		File tempFile = new File(res);
+
+		// Si l'utilisateur n'a jamais renseigné de fichier CSV ou que le chemin du fichier est incorrect
+		if (!res.equals("") && tempFile.exists()) {
 			this.elements.clear();
 			this.elements.addAll(Element.CSVToElement(res));
-			
 			this.table.getItems().clear();
 			this.table.getItems().addAll(this.elements);
 		}
@@ -86,10 +85,6 @@ public class ElementController implements Initializable, IActionFormulaire {
 		/*
 		 * Événements liés au boutons de l'interface
 		 */
-		this.openFile.setOnAction(keyEvent -> {
-
-			openFile();
-		});
 
 		this.tfId.setOnKeyPressed(keyEvent -> {
 

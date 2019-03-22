@@ -17,11 +17,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -37,9 +34,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 	
 	private Stage stage;
 
-	@FXML
-	private Button openFile;
-	
+
 	@FXML
 	private TableView<Chaine> table;
 	
@@ -68,8 +63,9 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 	public void initialize(URL url, ResourceBundle rb) {
 
 		String res = Path.CHAINE.getPath();
-		
-		if (!res.equals("")) {
+		File tempFile = new File(res);
+
+		if (!res.equals("") && tempFile.exists()) {
 			
 			// On clear la liste de chaînes (pour ajouter les nouveaux objets)  
 			this.chaines.clear();
@@ -86,38 +82,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 			this.table.getItems().addAll(this.chaines);
 		}
 		
-		// Au click sur Fichier > Ouvrir 
-		this.openFile.setOnAction(keyEvent -> {
 
-			try {
-				
-				// On créer un FileChooser pour choisir un fichier dans l'ordinateur 
-				FileChooser fileChooser = new FileChooser();
-				
-				// Les fichiers sélectionner ne seront que du type ".csv"
-				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
-				fileChooser.getExtensionFilters().add(extFilter);
-				File file = fileChooser.showOpenDialog(this.stage);
-					
-				
-				PersistenceUtils.savePath(Path.CHAINE, file.getAbsolutePath());
-				
-				this.chaines.clear();
-				this.chaines.addAll(Chaine.CSVToChaine(file.getAbsolutePath()));
-				
-				this.table.getItems().clear();
-				this.table.getItems().addAll(this.chaines);
-				
-				
-			} catch (Exception e) {
-				
-				MessageUtils.messageAlert(AlertType.ERROR, "Erreur", e.getMessage());
-				PersistenceUtils.savePath(Path.CHAINE, "");
-			}
-			
-		});
-
-		
 		// événements sur les composants du formulaire
 		this.tfId.setOnKeyPressed(keyEvent -> {
 
@@ -291,7 +256,20 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 
 		}	
 	}
-	
+
+	public void reinitializeTableAndChaines(){
+		try {
+			this.chaines.clear();
+			this.chaines.addAll(Chaine.CSVToChaine(Path.CHAINE.getPath()));
+			this.table.getItems().clear();
+			this.table.getItems().addAll(this.chaines);
+		}catch (Exception e) {
+			MessageUtils.messageAlert(Alert.AlertType.ERROR, "Erreur", e.getMessage());
+			PersistenceUtils.savePath(Path.CHAINE, "");
+		}
+	}
+
+
 	void setStage(Stage stg) { 
 		stage = stg;
 	}

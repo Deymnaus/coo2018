@@ -29,20 +29,7 @@ public class AccueilController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		
-		this.bElement.setOnAction(actionEvent -> {
-			RoutingUtils.goTo(actionEvent, Route.ELEMENT);
-		});
-		
-		this.bChaine.setOnAction(actionEvent -> {
-
-			if (!Path.ELEMENT.getPath().equals("")) {
-				
-				RoutingUtils.goTo(actionEvent, Route.CHAINE);
-			} else {
-				
-				MessageUtils.messageAlert(AlertType.ERROR, "Fichier manquant", "Vous devez d'abord renseigner un fichier d'éléments");
-			}
-		});
+		//rien
 	}
 
 	Stage stage;

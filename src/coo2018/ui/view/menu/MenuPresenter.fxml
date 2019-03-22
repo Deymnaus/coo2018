@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="625.0" prefWidth="875.0" style="-fx-background-color: #484149;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coo2018.ui.controller.menu.MenuController">
+   <children>
+      <VBox prefHeight="625.0" prefWidth="245.0" style="-fx-background-color: #4F1858;">
+         <children>
+            <Pane prefHeight="100.0" prefWidth="407.0" style="-fx-background-color: #4A1453;">
+               <children>
+                  <Text fill="WHITE" layoutX="85.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ProdApp">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="40.0" />
+               </VBox.margin>
+            </Pane>
+            <Button fx:id="bImportElement" mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" stylesheets="@../../../res/css/style_button.css" text="Importer des élements" textFill="WHITE" />
+            <Button fx:id="bImportChaine" mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" stylesheets="@../../../res/css/style_button.css" text="Importer des chaines de production" textFill="WHITE" />
+            <Button fx:id="bElement" mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" stylesheets="@../../../res/css/style_button.css" text="Etat des stocks" textFill="WHITE" />
+            <Button fx:id="bChaine" mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" stylesheets="@../../../res/css/style_button.css" text="Simulation de la production" textFill="WHITE" />
+            <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" stylesheets="@../../../res/css/style_button.css" text="About" textFill="WHITE" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
