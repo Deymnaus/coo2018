@@ -32,8 +32,8 @@
                   <Insets bottom="40.0" />
                </VBox.margin>
             </Pane>
-            <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" text="Importer des élements" textFill="WHITE" />
-            <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" text="Importer des chaines de production" textFill="WHITE" />
+            <Button fx:id="openFileElement" mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" text="Importer des élements" textFill="WHITE" />
+            <Button fx:id="openFileChaine" mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" text="Importer des chaines de production" textFill="WHITE" />
             <Button fx:id="bElement" mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" text="Etat des stocks" textFill="WHITE" />
             <Button fx:id="bChaine" mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" text="Simulation de la production" textFill="WHITE" />
             <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="245.0" style="-fx-background-color: #4F1858;" text="About" textFill="WHITE" />

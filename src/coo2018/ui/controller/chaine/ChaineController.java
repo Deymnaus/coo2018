@@ -173,7 +173,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 				
 		this.bVisualiser.setOnAction(actionEvent -> {
 						
-			RoutingUtils.goTo(actionEvent, Route.CHAINE_DETAIL);
+			//RoutingUtils.goTo(actionEvent, Route.CHAINE_DETAIL);
 		});
 		
 		this.bProduction.setOnAction(actionEvent -> {

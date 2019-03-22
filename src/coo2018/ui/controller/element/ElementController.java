@@ -86,10 +86,10 @@ public class ElementController implements Initializable, IActionFormulaire {
 		/*
 		 * Événements liés au boutons de l'interface
 		 */
-		this.openFile.setOnAction(keyEvent -> {
-
-			openFile();
-		});
+//		this.openFile.setOnAction(keyEvent -> {
+//
+//			openFile();
+//		});
 
 		this.tfId.setOnKeyPressed(keyEvent -> {
 
