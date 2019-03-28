@@ -19,6 +19,6 @@ public class ElementEvent implements Observer {
 	public void update(Observable observable, Object message) {
 
 		Element c = ((Element)observable);
-		System.out.println(c.toString() + "\n" + (String) message);
+//		System.out.println(c.toString() + "\n" + (String) message);
 	}
 }

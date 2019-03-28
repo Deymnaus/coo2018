@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 /**
- * 
+ *
  * @author Andréa Christophe
  *
  */
@@ -24,34 +24,34 @@ public class ChaineDetailController implements Initializable {
 
 	private ObservableList<Element> elements = FXCollections.observableArrayList();
 	public List<Element> tabElements = new ArrayList<Element>();
-			
+
 	@FXML
 	private TableView<Element> tableEntree;
-	
-	@FXML  
+
+	@FXML
 	private TableColumn<Element, String> name;
-	
-	@FXML 
+
+	@FXML
 	private Button bRetour;
-	
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		
-		ObservableList<String> liste = FXCollections.observableArrayList();
-		
+
+//		ObservableList<String> liste = FXCollections.observableArrayList();
+
 		//this.name.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), liste));
-		
+
 		System.out.println("ELEMENT : " + this.tabElements.size());
 		this.tabElements.forEach(o -> {
-			
+
 			System.out.println(o.toString());
 		});
-		
+
 		this.bRetour.setOnAction(actionEvent -> {
-			
+
 			System.out.println("ELEMENT : " + this.tabElements.size());
 			this.tabElements.forEach(o -> {
-				
+
 				System.out.println(o.toString());
 			});
 //			RoutingUtils.goTo(actionEvent, Route.CHAINE);
@@ -71,7 +71,7 @@ public class ChaineDetailController implements Initializable {
 	}
 
 	public void setTabElements(List<Element> tabElements) {
-		
+
 		System.out.println("WOOOOOOOOOOOOOOOOOW : " + tabElements.size());
 		this.tabElements = tabElements;
 	}

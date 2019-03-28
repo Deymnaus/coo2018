@@ -17,14 +17,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 /**
  * s
@@ -34,33 +32,28 @@ import javafx.stage.Stage;
 public class ChaineController implements Initializable, IActionFormulaire, ITransformation {
 
 	private ObservableList<Chaine> chaines = FXCollections.observableArrayList();
-	
-	private Stage stage;
 
 	@FXML
-	private Button openFile;
-	
-	@FXML
 	private TableView<Chaine> table;
-	
+
 	@FXML
 	private TextField tfId;
 
 	@FXML
 	private TextField tfNom;
-	
+
 	@FXML
 	private TextField tfNiveauActivation;
-	
+
 	@FXML
 	private Button bAjouter;
-	
+
 	@FXML
 	private Button bSupprimer;
-	
+
 	@FXML
 	private Button bVisualiser;
-	
+
 	@FXML
 	private Button bProduction;
 
@@ -68,56 +61,27 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 	public void initialize(URL url, ResourceBundle rb) {
 
 		String res = Path.CHAINE.getPath();
-		
-		if (!res.equals("")) {
-			
-			// On clear la liste de chaînes (pour ajouter les nouveaux objets)  
+		File tempFile = new File(res);
+
+		if (!res.equals("") && tempFile.exists()) {
+
+			// On clear la liste de chaînes (pour ajouter les nouveaux objets)
 			this.chaines.clear();
 			try {
 				this.chaines.addAll(Chaine.CSVToChaine(res));
-				
+
 			} catch (Exception e) {
 
+				e.printStackTrace();
 				MessageUtils.messageAlert(AlertType.ERROR, "Erreur", e.getMessage());
 			}
-			
-			// On clear la tableview et on ajoute les nouveaux objets 
+
+			// On clear la tableview et on ajoute les nouveaux objets
 			this.table.getItems().clear();
 			this.table.getItems().addAll(this.chaines);
 		}
-		
-		// Au click sur Fichier > Ouvrir 
-		this.openFile.setOnAction(keyEvent -> {
 
-			try {
-				
-				// On créer un FileChooser pour choisir un fichier dans l'ordinateur 
-				FileChooser fileChooser = new FileChooser();
-				
-				// Les fichiers sélectionner ne seront que du type ".csv"
-				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
-				fileChooser.getExtensionFilters().add(extFilter);
-				File file = fileChooser.showOpenDialog(this.stage);
-					
-				
-				PersistenceUtils.savePath(Path.CHAINE, file.getAbsolutePath());
-				
-				this.chaines.clear();
-				this.chaines.addAll(Chaine.CSVToChaine(file.getAbsolutePath()));
-				
-				this.table.getItems().clear();
-				this.table.getItems().addAll(this.chaines);
-				
-				
-			} catch (Exception e) {
-				
-				MessageUtils.messageAlert(AlertType.ERROR, "Erreur", e.getMessage());
-				PersistenceUtils.savePath(Path.CHAINE, "");
-			}
-			
-		});
 
-		
 		// événements sur les composants du formulaire
 		this.tfId.setOnKeyPressed(keyEvent -> {
 
@@ -152,45 +116,35 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 
 			if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 
-				try {
-					Chaine.removeChaineToCSV(this.table.getSelectionModel().getSelectedItem().getId(), Path.CHAINE.getPath());
-				} catch (Exception e) {
-					MessageUtils.messageAlert(AlertType.ERROR, "Erreur", e.getMessage());
-				}
-				this.table.getSelectionModel().getSelectedItems().forEach(this.table.getItems()::remove);
+				removeToList();
 			}
 		});
 
 		this.bSupprimer.setOnAction(actionEvent -> {
 
-			try {
-				Chaine.removeChaineToCSV(this.table.getSelectionModel().getSelectedItem().getId(), Path.CHAINE.getPath());
-			} catch (Exception e) {
-				MessageUtils.messageAlert(AlertType.ERROR, "Erreur", e.getMessage());
-			}			
-			this.table.getSelectionModel().getSelectedItems().forEach(this.table.getItems()::remove);
+			removeToList();
 		});
-				
+
 		this.bVisualiser.setOnAction(actionEvent -> {
-						
-			//RoutingUtils.goTo(actionEvent, Route.CHAINE_DETAIL);
+
+			RoutingUtils.goTo(actionEvent, Route.ELEMENT_SIMULATION);
 		});
-		
+
 		this.bProduction.setOnAction(actionEvent -> {
 
 			transforme();
 		});
 	}
-	
+
 	/**
-	 * Remet la valeur des champs du formulaire à defaut 
+	 * Remet la valeur des champs du formulaire à defaut
 	 */
 	@Override
 	public void clearTextField() {
 
 		this.tfId.setText("");
 		this.tfNom.setText("");
-		this.tfNiveauActivation.setText("");	
+		this.tfNiveauActivation.setText("");
 	}
 
 	/**
@@ -204,15 +158,15 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 
 	@Override
 	public void addToList() {
-		
+
 		if (isChampValid()) {
 
 			// créer un élément avec les champs du formulaire
 			Chaine chaine = new Chaine(
-					tfId.getText(), 
-					tfNom.getText(), 
+					tfId.getText(),
+					tfNom.getText(),
 					Integer.parseInt(tfNiveauActivation.getText())
-				);
+			);
 
 			// rajoute cet objet dans la liste des éléments
 			ObservableList<Chaine> chaineObservable = this.table.getItems();
@@ -223,7 +177,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 
 			try {
 				Chaine.addChaineToCSV(chaine, Path.CHAINE.getPath());
-			
+
 			} catch (Exception e) {
 
 				e.printStackTrace();
@@ -231,69 +185,85 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 
 		} else {
 
-			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Les champs ne sont pas valides.");
+			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Champs invalides.");
 		}
 	}
 
 	@Override
 	public void removeToList() {
-		
+
 		try {
 			Chaine.removeChaineToCSV(this.table.getSelectionModel().getSelectedItem().getId(), Path.CHAINE.getPath());
 		} catch (Exception e) {
-			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", e.getMessage());
+			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Aucun chaîne selectionnée.");
 		}
 		this.table.getSelectionModel().getSelectedItems().forEach(this.table.getItems()::remove);
 	}
-	
+
 	@Override
 	public void transforme() {
-	
+
 		boolean valide = true;
-		
-		HashMap<String, Element> elements = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT.getPath());
-		
+		HashMap<String, Element> elements;
+
+		if (Element.CSVToElement(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
+
+			elements = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT.getPath());
+
+		} else {
+
+			elements = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath());
+		}
+
 		for(Chaine chaine : this.table.getItems()) {
-			
+
 			for(Element element : chaine.getElementsEntree()) {
-								
+
 				// On récupère l'élément du CSV avec l'identifiant de l'élément en entrée de chaîne et on soustrait la quantité
-				if (elements.get(element.getId()).decrementeQuantite(element.getQuantite()) < 0) {
-										
+				if (elements.get(element.getId()).decrementeQuantite(element.getQuantite()*chaine.getNiveauActivation()) < 0) {
+
 					if (elements.get(element.getId()).getPrixAchat() == -1.0) {
-						
+
 						valide = false;
 					}
 				}
 			}
-			
+
 			for(Element element : chaine.getElementsSortie()) {
-				
-				elements.get(element.getId()).incrementeQuantite(element.getQuantite());
+
+				elements.get(element.getId()).incrementeQuantite(element.getQuantite()*chaine.getNiveauActivation());
 			}
-			
+
 		}
-		
+
 		if (!valide) {
-			
-			MessageUtils.messageAlert(AlertType.ERROR, "Transformation annulée", "Il y a un problème avec la quantité des éléments en entrée et les éléments présent en stock");
+
+			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Conflit entre la quantité des éléments en entrée et les éléments présent en stock.");
 
 		} else {
-			
-			Element.clearCSV(Path.ELEMENT.getPath());
-			
-			elements.forEach((id, element) -> {
-				
-				Element.addElementToCSV(element, Path.ELEMENT.getPath());
-			});
-			
-			MessageUtils.messageAlert(AlertType.INFORMATION, "Fin de la transformation", "La transformation a bien été effectuée");
 
-		}	
+			Element.clearCSV(Path.ELEMENT_SIMULATION.getPath());
+
+			elements.forEach((id, element) -> {
+
+				Element.addElementToCSV(element, Path.ELEMENT_SIMULATION.getPath());
+			});
+
+			MessageUtils.messageAlert(AlertType.INFORMATION, "Information", "Transformation a été effectuée avec succès.");
+
+		}
 	}
-	
-	void setStage(Stage stg) { 
-		stage = stg;
+
+	public void reinitializeTableAndChaines(){
+		try {
+			this.chaines.clear();
+			this.chaines.addAll(Chaine.CSVToChaine(Path.CHAINE.getPath()));
+			this.table.getItems().clear();
+			this.table.getItems().addAll(this.chaines);
+		}catch (Exception e) {
+			MessageUtils.messageAlert(Alert.AlertType.ERROR, "Erreur", e.getMessage());
+			PersistenceUtils.savePath(Path.CHAINE, "");
+		}
 	}
 
 }

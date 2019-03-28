@@ -211,12 +211,11 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 			String[] elementsSortieCSV = new String[1];
 			
 			// ex : E005&2;E003&3 donnera un tableau avec en pos0 : E005&2 et en pos1 : E003&3
-			System.out.println(csvRecord.toMap().get("entree"));
 			
 			// Si les elements en entrée sont > à 1
-			if (csvRecord.toMap().get("entree").contains(";")) {
+			if (csvRecord.toMap().get("entree").contains("-")) {
 
-				elementsEntreeCSV = csvRecord.toMap().get("entree").split(";");
+				elementsEntreeCSV = csvRecord.toMap().get("entree").split("-");
 				
 			// Si il n'y a qu'un seul element en entrée
 			} else {
@@ -244,9 +243,9 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 			
 			
 			// ex : E005&2;E003&3 donnera un tableau avec en pos0 : E005&2 et en pos1 : E003&3
-			if (csvRecord.toMap().get("sortie").contains(";")) {
+			if (csvRecord.toMap().get("sortie").contains("-")) {
 
-				elementsSortieCSV = csvRecord.toMap().get("entree").split(";");
+				elementsSortieCSV = csvRecord.toMap().get("sortie").split("-");
 			} else {
 				
 				elementsSortieCSV[0] = csvRecord.toMap().get("sortie");
@@ -309,9 +308,7 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 			CSVPrinter printer = CSVUtils.getPrinter(path);
 			printer.printRecord("id", "nom", "niveauActivation", "entree", "sortie");
 			chaine.forEach(c -> {
-				
-				System.out.println(c.toString());
-				
+								
 				try {
 					
 					// Remplacer par getId()
@@ -368,7 +365,6 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 		
 		try {
 			
-			System.out.println("ID : " + chaine.getId());
 			printer.printRecord(chaine.getId(), chaine.getNom(), chaine.getNiveauActivation(), chaine.elementsEntreeToString(), chaine.elementsSortieToString());
 			printer.close();
 			
@@ -439,21 +435,5 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 	public void removeToCSV(String id, String path) throws IOException {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	public static void main(String[] args) {
-		
-		List<Chaine> chaines = null;
-		try {
-			chaines = Chaine.CSVToChaine("chaines.csv");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		System.out.println("Longueur : " + chaines.size() + "\nElements : ");
-		chaines.forEach(chaine -> {
-			System.out.println(chaine.toString());
-		});
 	}
 }

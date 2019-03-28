@@ -1,0 +1,12 @@
+coo2018
+coo2018.model
+coo2018.model.event
+coo2018.ui.controller.accueil
+coo2018.ui.controller.chaine
+coo2018.ui.controller.element
+coo2018.ui.view.accueil
+coo2018.utils.csv
+coo2018.utils.message
+coo2018.utils.persistence
+coo2018.utils.rooting
+coo2018.values

@@ -3,8 +3,6 @@ package coo2018.utils.csv;
 import java.io.IOException;
 import java.util.List;
 
-import coo2018.model.Chaine;
-
 /**
  * 
  * @author Andréa Christophe

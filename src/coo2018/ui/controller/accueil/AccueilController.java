@@ -18,7 +18,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- * 
+ *
  * @author Andréa Christophe
  *
  */
@@ -29,59 +29,21 @@ public class AccueilController implements Initializable {
 
 	@FXML
 	private Button bChaine;
-	
+
 	@FXML
 	private Button openFileElement;
-	
+
 	@FXML
 	private Button openFileChaine;
-	
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		
-		this.openFileElement.setOnAction(keyEvent -> {
 
-			try {
-				
-				// On créer un FileChooser pour choisir un fichier dans l'ordinateur 
-				FileChooser fileChooser = new FileChooser();
-				
-				// Les fichiers sélectionner ne seront que du type ".csv"
-				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
-				fileChooser.getExtensionFilters().add(extFilter);
-				File file = fileChooser.showOpenDialog(this.stage);
-					
-				
-				PersistenceUtils.savePath(Path.CHAINE, file.getAbsolutePath());
-				
-				
-			} catch (Exception e) {
-				
-				MessageUtils.messageAlert(AlertType.ERROR, "Erreur", e.getMessage());
-				PersistenceUtils.savePath(Path.CHAINE, "");
-			}
-			
-		});
-		
-		this.bElement.setOnKeyPressed(actionEvent -> {
-			RoutingUtils.goTo(actionEvent, Route.ELEMENT);
-		});
-		
-		this.bChaine.setOnKeyPressed(actionEvent -> {
-
-			if (!Path.ELEMENT.getPath().equals("")) {
-				
-				RoutingUtils.goTo(actionEvent, Route.CHAINE);
-			} else {
-				
-				MessageUtils.messageAlert(AlertType.ERROR, "Fichier manquant", "Vous devez d'abord renseigner un fichier d'éléments");
-			}
-		});
 	}
 
 	Stage stage;
 
-	void setStage(Stage stg) { 
+	void setStage(Stage stg) {
 		stage = stg;
 	}
 

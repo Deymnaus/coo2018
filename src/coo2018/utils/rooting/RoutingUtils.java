@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
@@ -23,7 +22,7 @@ public class RoutingUtils {
 	 * @param actionEvent
 	 * @param route
 	 */
-	public static void goTo(KeyEvent actionEvent, Route route) {
+	public static void goTo(ActionEvent actionEvent, Route route) {
 		
 		try {
 			Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

@@ -1,8 +1,5 @@
 package coo2018.utils.persistence;
 
-import java.io.IOException;
-
-import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import coo2018.utils.csv.CSVUtils;
@@ -15,7 +12,9 @@ import coo2018.utils.csv.CSVUtils;
 public enum Path {
 	
 	ELEMENT("element"),
-	CHAINE("chaine");
+	CHAINE("chaine"),
+	ELEMENT_SIMULATION("elementSimulation"),
+	ELEMENT_ACHAT("elementAchat");
     
     private String path;  
      
@@ -37,6 +36,12 @@ public enum Path {
 					break;
 				case "chaine":
 					res = parser.toMap().get("chainePath");
+					break;
+				case "elementSimulation":
+					res = parser.toMap().get("elementSimulationPath");
+					break;
+				case "elementAchat":
+					res = parser.toMap().get("elementAchatPath");
 					break;
 				default:
 					break;

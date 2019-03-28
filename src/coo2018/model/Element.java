@@ -174,7 +174,6 @@ public class Element extends Observable implements IActionCSV<Element> {
     
     public int decrementeQuantite(int pfQuantite) {
     	
-    	System.out.println("Quantité actuelle : " + this.quantite + "... va être supprimé : " + pfQuantite);
     	this.quantite -= pfQuantite;
     	return this.quantite;
     }
@@ -200,6 +199,7 @@ public class Element extends Observable implements IActionCSV<Element> {
 						csvRecord.toMap().get("id"),
 						csvRecord.toMap().get("nom"),
 						Integer.parseInt(csvRecord.toMap().get("quantite")),
+//						100,
 						csvRecord.toMap().get("unite"),
 						csvRecord.toMap().get("prixAchat").equals("NA") ? 0.0 : Double.parseDouble(csvRecord.toMap().get("prixAchat")),
 						csvRecord.toMap().get("prixVente").equals("NA") ? 0.0 : Double.parseDouble(csvRecord.toMap().get("prixVente"))
@@ -241,40 +241,34 @@ public class Element extends Observable implements IActionCSV<Element> {
      * @param path
      * @throws IOException
      */
-	public static void removeElementToCSV(String id, String path) throws IOException {
+	public static void removeElementToCSV(String id, String path) throws Exception {
 		
 		List<Element> elements = CSVToElement(path);
 		CSVPrinter printer = CSVUtils.getPrinter(path);
 		
 		try {
 			
-			printer.printRecord("id", "nom", "quantite", "unite", "prixAchat", "prixVente");
-		
-		} catch (IOException e1) {
-
-			e1.printStackTrace();
-		}
-		
+		printer.printRecord("id", "nom", "quantite", "unite", "prixAchat", "prixVente");
+	
 		elements.forEach(e -> {
 			
-			System.out.println(e.toString());
-			
-			try {
+			// Remplacer par getId()
+			if (!e.getId().equals(id)) {
 				
-				// Remplacer par getId()
-				if (!e.getId().equals(id)) {
-					
+				try {
 					printer.printRecord(e.getId(), e.getNom(), e.getQuantite(), e.getUnite(), e.getPrixAchat(), e.getPrixVente());
-				}
-				
-				
-			} catch (IOException ex) {
+				} catch (IOException e1) {
 
-				ex.printStackTrace();
+				}
 			}
-		});
-		
+		});	
+
 		printer.close();
+			
+		} catch (IOException ex) {
+
+			throw new Exception("");
+		}
 	}
 	
 	/**
@@ -346,7 +340,7 @@ public class Element extends Observable implements IActionCSV<Element> {
 	}
 
 	public static void clearCSV(String path) {
-		
+				
 		CSVPrinter printer = CSVUtils.getPrinter(path);
 		
 		try {
