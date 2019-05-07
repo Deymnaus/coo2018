@@ -44,6 +44,9 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 
 	@FXML
 	private TextField tfNiveauActivation;
+	
+	@FXML
+	private TextField tfTemps;
 
 	@FXML
 	private Button bAjouter;
@@ -100,6 +103,12 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 			if (keyEvent.getCode().equals(KeyCode.ENTER))
 				addToList();
 		});
+		
+		this.tfTemps.setOnKeyPressed(keyEvent -> {
+
+			if (keyEvent.getCode().equals(KeyCode.ENTER))
+				addToList();
+		});
 
 		this.bAjouter.setOnKeyPressed(keyEvent -> {
 
@@ -132,7 +141,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 
 		this.bProduction.setOnAction(actionEvent -> {
 
-			transforme();
+			while(transforme());
 		});
 	}
 
@@ -145,6 +154,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 		this.tfId.setText("");
 		this.tfNom.setText("");
 		this.tfNiveauActivation.setText("");
+		this.tfTemps.setText("");
 	}
 
 	/**
@@ -153,7 +163,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 	@Override
 	public boolean isChampValid() {
 
-		return (this.tfId.getText().isEmpty() || this.tfNom.getText().isEmpty() || this.tfNiveauActivation.getText().isEmpty()) ? false : true;
+		return (this.tfId.getText().isEmpty() || this.tfNom.getText().isEmpty() || this.tfNiveauActivation.getText().isEmpty() || this.tfTemps.getText().isEmpty()) ? false : true;
 	}
 
 	@Override
@@ -165,7 +175,8 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 			Chaine chaine = new Chaine(
 					tfId.getText(),
 					tfNom.getText(),
-					Integer.parseInt(tfNiveauActivation.getText())
+					Integer.parseInt(tfNiveauActivation.getText()),
+					Integer.parseInt(tfTemps.getText())
 			);
 
 			// rajoute cet objet dans la liste des éléments
@@ -201,7 +212,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 	}
 
 	@Override
-	public void transforme() {
+	public boolean transforme() {
 
 		boolean valide = true;
 		HashMap<String, Element> elements;
@@ -214,6 +225,8 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 
 			elements = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath());
 		}
+		
+		System.out.println(elements.toString());
 
 		for(Chaine chaine : this.table.getItems()) {
 
@@ -238,9 +251,11 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 
 		if (!valide) {
 
-			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Conflit entre la quantité des éléments en entrée et les éléments présent en stock.");
+			MessageUtils.messageAlert(AlertType.INFORMATION, "Information", "Transformation a été effectuée avec succès.");
+			//MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Conflit entre la quantité des éléments en entrée et les éléments présent en stock.");
 
 		} else {
+			
 
 			Element.clearCSV(Path.ELEMENT_SIMULATION.getPath());
 
@@ -249,9 +264,11 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 				Element.addElementToCSV(element, Path.ELEMENT_SIMULATION.getPath());
 			});
 
-			MessageUtils.messageAlert(AlertType.INFORMATION, "Information", "Transformation a été effectuée avec succès.");
+			//MessageUtils.messageAlert(AlertType.INFORMATION, "Information", "Transformation a été effectuée avec succès.");
 
 		}
+		
+		return valide;
 	}
 
 	public void reinitializeTableAndChaines(){

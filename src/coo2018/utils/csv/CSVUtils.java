@@ -14,7 +14,7 @@ import org.apache.commons.csv.CSVPrinter;
  * @author Andréa Christophe
  *
  */
-public class CSVUtils {
+public class CSVUtils implements FileUtils {
 
 	/**
 	 * 

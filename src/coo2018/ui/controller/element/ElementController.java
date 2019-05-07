@@ -12,11 +12,12 @@ import coo2018.ui.IActionFormulaire;
 import coo2018.utils.message.MessageUtils;
 import coo2018.utils.persistence.Path;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.collections.ObservableList;import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -76,6 +77,11 @@ public class ElementController implements Initializable, IActionFormulaire {
             this.table.getItems().clear();
             this.table.getItems().addAll(this.elements);
         }
+        
+        /*this.table.getColumns().get(0).setOnEditCommit((TableColumn<Element, String>.CellEditEvent<Element, String> idColumn) -> {
+        	
+        	(idColumn.getTableView().getItems().get(idColumn.getTablePosition().getRow())).setId(idColumn.getNewValue().);
+        });*/
 
 
         /*

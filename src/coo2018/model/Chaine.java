@@ -24,6 +24,7 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 	private String id;
 	private String nom;
 	private int niveauActivation;
+	private int temps;
 	private List<Element> elementsEntree;
 	private List<Element> elementsSortie;
 	
@@ -32,6 +33,7 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 		this.id = ""; 
 		this.nom = "";
 		this.niveauActivation = 0;
+		this.temps = 0;
 		this.elementsEntree = new ArrayList<Element>();
 		this.elementsSortie = new ArrayList<Element>();
 		this.addObserver(new ChaineEvent());
@@ -47,6 +49,7 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 		this.id = id; 
 		this.nom = nom;
 		this.niveauActivation = 20;
+		this.temps = 0;
 		this.elementsEntree = new ArrayList<Element>();
 		this.elementsSortie = new ArrayList<Element>();
 		this.addObserver(new ChaineEvent());
@@ -58,11 +61,12 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 	 * @param nom
 	 * @param niveauActivation
 	 */
-	public Chaine(String id, String nom, int niveauActivation) {
+	public Chaine(String id, String nom, int niveauActivation, int temps) {
 		
 		this.id = id; 
 		this.nom = nom;
 		this.niveauActivation = niveauActivation;
+		this.temps = temps;
 		this.elementsEntree = new ArrayList<Element>();
 		this.elementsSortie = new ArrayList<Element>();
 		this.addObserver(new ChaineEvent());
@@ -80,6 +84,7 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 		this.id = id; 
 		this.nom = nom;
 		this.niveauActivation = 20;
+		this.temps = 0;
 		this.elementsEntree = entree;
 		this.elementsSortie = sortie;
 		this.addObserver(new ChaineEvent());
@@ -93,11 +98,12 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 	 * @param entree
 	 * @param sortie
 	 */
-	public Chaine(String id, String nom, int niveauActivation, List<Element> entree, List<Element> sortie) {
+	public Chaine(String id, String nom, int niveauActivation, int temps, List<Element> entree, List<Element> sortie) {
 		
 		this.id = id; 
 		this.nom = nom;
 		this.niveauActivation = niveauActivation;
+		this.temps = temps;
 		this.elementsEntree = entree;
 		this.elementsSortie = sortie;
 		this.addObserver(new ChaineEvent());
@@ -193,6 +199,15 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 		return this;
 	}
 
+	public int getTemps() {
+		return temps;
+	}
+
+	public Chaine setTemps(int temps) {
+		this.temps = temps;
+		return this;
+	}
+
 	/**
 	 * 
 	 * @param path
@@ -271,6 +286,7 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 					csvRecord.toMap().get("id"),
 					csvRecord.toMap().get("nom"),
 					Integer.parseInt(csvRecord.toMap().get("niveauActivation")),
+					Integer.parseInt(csvRecord.toMap().get("temps")),
 					elementsEntree,
 					elementsSortie
 				);
@@ -306,7 +322,7 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 		try {
 			chaine = CSVToChaine(path);
 			CSVPrinter printer = CSVUtils.getPrinter(path);
-			printer.printRecord("id", "nom", "niveauActivation", "entree", "sortie");
+			printer.printRecord("id", "nom", "niveauActivation", "temps", "entree", "sortie");
 			chaine.forEach(c -> {
 								
 				try {
@@ -314,7 +330,7 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 					// Remplacer par getId()
 					if (!c.getId().equals(id)) {
 						
-						printer.printRecord(c.getId(), c.getNom(), c.getNiveauActivation(), c.elementsEntreeToString(), c.elementsSortieToString());
+						printer.printRecord(c.getId(), c.getNom(), c.getNiveauActivation(), c.getTemps(), c.elementsEntreeToString(), c.elementsSortieToString());
 					}
 					
 					
@@ -344,7 +360,7 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 		
 		try {
 			
-			printer.printRecord("id", "nom", "niveauActivation", "entree", "sortie");
+			printer.printRecord("id", "nom", "niveauActivation", "temps", "entree", "sortie");
 		
 		} catch (IOException e1) {
 
@@ -355,7 +371,7 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 			
 			try {
 				
-				printer.printRecord(c.getId(), c.getNom(), c.getNiveauActivation(), c.elementsEntreeToString(), c.elementsSortieToString());
+				printer.printRecord(c.getId(), c.getNom(), c.getNiveauActivation(), c.getTemps(), c.elementsEntreeToString(), c.elementsSortieToString());
 			
 			} catch (IOException ex) {
 

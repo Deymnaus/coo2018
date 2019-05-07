@@ -1,3 +1,3 @@
-id,nom,niveauActivation,entree,sortie
-C001,Production or jaune,2,E002&75-E003&12-E004&13,E007&100
-C002,Production porte,1,E005&10,E006&1
+id,nom,niveauActivation,temps,entree,sortie
+C001,Production or jaune,2,3,E003&12-E002&30,E007&10
+C002,Production porte,1,3,E005&10,E006&5

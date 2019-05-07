@@ -1,7 +1,12 @@
 package coo2018.ui.view.accueil;
 
+import java.io.IOException;
+
+import coo2018.utils.rooting.Route;
+import coo2018.utils.rooting.RoutingUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -25,11 +30,25 @@ public class AccueilPage extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		Parent root = FXMLLoader.load(getClass().getResource("AccueilPresenter.fxml"));
-		primaryStage.setTitle("Gestion de production");
-		primaryStage.setScene(new Scene(root));
-		primaryStage.setMaximized(false);
-		primaryStage.centerOnScreen();
-		primaryStage.show();
+		try {
+			
+			Parent elementPageParent = FXMLLoader.load(RoutingUtils.class.getResource(Route.ELEMENT.getPath()));
+			Scene elementPageScene = new Scene(elementPageParent);
+			Stage sceneActuel = primaryStage;
+			sceneActuel.setScene(elementPageScene);
+			primaryStage.show();
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+//		Parent root = FXMLLoader.load(getClass().getResource("ElementPresenter.fxml"));
+//		primaryStage.setTitle("Gestion de production");
+//		primaryStage.setScene(new Scene(root));
+//		primaryStage.setMaximized(false);
+//		primaryStage.centerOnScreen();
+//		primaryStage.show();
+		
 	}
 }
