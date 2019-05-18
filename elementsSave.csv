@@ -1,0 +1,6 @@
+id,nom,quantite,unite,prixAchat,prixVente
+E001,Bois,100,unité,10.0,8.0
+E002,Porte,0,pieces,-1.0,40.0
+E003,Minerais de fer,100,unité,20.0,10.0
+E004,Fer,125,pieces,4.0,3.0
+E005,Porte en fer,0,pieces,-1.0,120.0

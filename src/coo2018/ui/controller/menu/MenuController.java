@@ -7,12 +7,14 @@ import java.util.ResourceBundle;
 import coo2018.utils.message.MessageUtils;
 import coo2018.utils.persistence.Path;
 import coo2018.utils.persistence.PersistenceUtils;
+import coo2018.utils.persistence.dao.impl.ChaineDAO;
 import coo2018.utils.rooting.Route;
 import coo2018.utils.rooting.RoutingUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -44,7 +46,17 @@ public class MenuController implements Initializable {
         this.bChaine.setOnAction(actionEvent -> {
 
             if (!Path.ELEMENT.getPath().equals("")) {
-                RoutingUtils.goTo(actionEvent, Route.CHAINE);
+            	
+            	try {
+    				new ChaineDAO().findAll();
+                    RoutingUtils.goTo(actionEvent, Route.CHAINE);
+
+    			} catch (Exception e) {
+
+    				e.printStackTrace();
+    				MessageUtils.messageAlert(AlertType.ERROR, "Erreur", e.getMessage());
+    			}
+            	
             } else {
                 MessageUtils.messageAlert(Alert.AlertType.ERROR, "Erreur", "Renseigner d'abord un fichier d'éléments.");
             }

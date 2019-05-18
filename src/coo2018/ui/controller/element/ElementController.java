@@ -11,6 +11,8 @@ import coo2018.model.Element;
 import coo2018.ui.IActionFormulaire;
 import coo2018.utils.message.MessageUtils;
 import coo2018.utils.persistence.Path;
+import coo2018.utils.persistence.dao.DAO;
+import coo2018.utils.persistence.dao.impl.ElementDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -62,6 +64,8 @@ public class ElementController implements Initializable, IActionFormulaire {
 
     @FXML
     private Button bSupprimer;
+    
+    DAO<Element> elementDao = new ElementDAO();
 
 
     @Override
@@ -73,7 +77,13 @@ public class ElementController implements Initializable, IActionFormulaire {
         // Si l'utilisateur n'a jamais renseigné de fichier CSV ou que le chemin du fichier est incorrect
         if (!res.equals("") && tempFile.exists()) {
             this.elements.clear();
-            this.elements.addAll(Element.CSVToElement(res));
+            
+            try {
+				this.elements.addAll(elementDao.findAll());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+            
             this.table.getItems().clear();
             this.table.getItems().addAll(this.elements);
         }
@@ -90,49 +100,88 @@ public class ElementController implements Initializable, IActionFormulaire {
 
         this.tfId.setOnKeyPressed(keyEvent -> {
 
-            if (keyEvent.getCode().equals(KeyCode.ENTER))
-                addToList();
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            	try {
+					addToList();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
         });
 
         this.tfNom.setOnKeyPressed(keyEvent -> {
 
-            if (keyEvent.getCode().equals(KeyCode.ENTER))
-                addToList();
+        	if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            	try {
+					addToList();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
         });
 
         this.tfQuantite.setOnKeyPressed(keyEvent -> {
 
-            if (keyEvent.getCode().equals(KeyCode.ENTER))
-                addToList();
+        	if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            	try {
+					addToList();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
         });
 
         this.tfUnite.setOnKeyPressed(keyEvent -> {
 
-            if (keyEvent.getCode().equals(KeyCode.ENTER))
-                addToList();
+        	if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            	try {
+					addToList();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
         });
 
         this.tfPrixAchat.setOnKeyPressed(keyEvent -> {
 
-            if (keyEvent.getCode().equals(KeyCode.ENTER))
-                addToList();
+        	if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            	try {
+					addToList();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
         });
 
         this.tfPrixVente.setOnKeyPressed(keyEvent -> {
 
-            if (keyEvent.getCode().equals(KeyCode.ENTER))
-                addToList();
+        	if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            	try {
+					addToList();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
         });
 
         this.bAjouter.setOnKeyPressed(keyEvent -> {
 
-            if (keyEvent.getCode().equals(KeyCode.ENTER))
-                addToList();
+        	if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            	try {
+					addToList();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
         });
 
         this.bAjouter.setOnAction(actionEvent -> {
 
-            addToList();
+            try {
+				addToList();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
         });
 
         this.bSupprimer.setOnKeyPressed(keyEvent -> {
@@ -179,9 +228,10 @@ public class ElementController implements Initializable, IActionFormulaire {
 
     /**
      * Ajoute un élément au tableau et au fichier CSV via les champs du formulaire
+     * @throws Exception 
      */
     @Override
-    public void addToList() {
+    public void addToList() throws Exception {
 
         if (isChampValid()) {
 
@@ -203,7 +253,9 @@ public class ElementController implements Initializable, IActionFormulaire {
             clearTextField();
 
             // On rajoute l'élément dans le fichier CSV
-            Element.addElementToCSV(element, Path.ELEMENT.getPath());
+
+			this.elementDao.create(element);
+            //Element.addElementToCSV(element, Path.ELEMENT.getPath());
 
         } else {
 
@@ -218,7 +270,8 @@ public class ElementController implements Initializable, IActionFormulaire {
     public void removeToList() {
 
         try {
-            Element.removeElementToCSV(this.table.getSelectionModel().getSelectedItem().getId(), Path.ELEMENT.getPath());
+        	this.elementDao.delete(this.table.getSelectionModel().getSelectedItem());
+//            Element.removeElementToCSV(this.table.getSelectionModel().getSelectedItem().getId(), Path.ELEMENT.getPath());
         } catch (Exception e) {
             MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Aucun élément selectionné.");
         }

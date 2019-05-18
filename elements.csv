@@ -1,8 +1,6 @@
 id,nom,quantite,unite,prixAchat,prixVente
-E005,Planche,40,pieces,-1.0,20.0
-E006,Porte,50,pieces,-1.0,300.0
-E007,Or jaune,220,grammes,-1.0,90.0
-E001,Bois,125,pieces,4.0,3.0
-E002,Or,-60,grammes,34.0,25.0
-E003,Cuivre,56,grammes,14.0,10.0
-E004,Argent,20,grammes,23.0,20.0
+E005,Porte en fer,10,pieces,-1.0,120.0
+E001,Bois,0,unité,10.0,8.0
+E002,Porte,0,pieces,-1.0,40.0
+E003,Minerais de fer,95,unité,20.0,10.0
+E004,Fer,110,pieces,4.0,3.0

@@ -405,7 +405,7 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 			
 			if (!this.elementsEntree.get(this.elementsEntree.size()-1).equals(e)) {
 				
-				res += ";";
+				res += "-";
 			} 
 		}
 		
@@ -422,7 +422,7 @@ public class Chaine extends Observable implements IActionCSV<Chaine> {
 			
 			if (!this.elementsSortie.get(this.elementsSortie.size()-1).equals(e)) {
 				
-				res += ";";
+				res += "-";
 			} 
 		}
 		

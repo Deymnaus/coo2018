@@ -26,7 +26,6 @@ public class AccueilPage extends Application {
 	/**
 	 * Créer et charge la page d'accueil
 	 */
-
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
@@ -36,6 +35,7 @@ public class AccueilPage extends Application {
 			Scene elementPageScene = new Scene(elementPageParent);
 			Stage sceneActuel = primaryStage;
 			sceneActuel.setScene(elementPageScene);
+			primaryStage.setTitle("Gestion de la production");
 			primaryStage.show();
 			
 		} catch (IOException e) {

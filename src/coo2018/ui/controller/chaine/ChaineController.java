@@ -2,7 +2,10 @@ package coo2018.ui.controller.chaine;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import coo2018.model.Chaine;
@@ -11,6 +14,9 @@ import coo2018.ui.IActionFormulaire;
 import coo2018.utils.message.MessageUtils;
 import coo2018.utils.persistence.Path;
 import coo2018.utils.persistence.PersistenceUtils;
+import coo2018.utils.persistence.dao.DAO;
+import coo2018.utils.persistence.dao.impl.ChaineDAO;
+import coo2018.utils.persistence.dao.impl.ElementDAO;
 import coo2018.utils.rooting.Route;
 import coo2018.utils.rooting.RoutingUtils;
 import javafx.collections.FXCollections;
@@ -59,19 +65,28 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 
 	@FXML
 	private Button bProduction;
+	
+	@FXML
+	private Button bDetail;
+	
+	private int tempsTotal;
+	
+	DAO<Chaine> chaineDao = new ChaineDAO();
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 
 		String res = Path.CHAINE.getPath();
 		File tempFile = new File(res);
+		
+		this.tempsTotal = 0;
 
 		if (!res.equals("") && tempFile.exists()) {
 
 			// On clear la liste de chaînes (pour ajouter les nouveaux objets)
 			this.chaines.clear();
 			try {
-				this.chaines.addAll(Chaine.CSVToChaine(res));
+				this.chaines.addAll(chaineDao.findAll());
 
 			} catch (Exception e) {
 
@@ -135,13 +150,31 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 		});
 
 		this.bVisualiser.setOnAction(actionEvent -> {
-
-			RoutingUtils.goTo(actionEvent, Route.ELEMENT_SIMULATION);
+			
+			if (!Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
+				
+				try {
+					RoutingUtils.goTo(actionEvent, Route.ELEMENT_SIMULATION);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			} else {
+				
+				MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Aucune simulation en cours.");
+			}
 		});
 
 		this.bProduction.setOnAction(actionEvent -> {
 
-			while(transforme());
+			if (!Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
+				
+				MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Une simulation est déjà en cours, cliquez sur visualier.");
+				
+			} else {
+				
+				transforme();
+			}
 		});
 	}
 
@@ -204,59 +237,99 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 	public void removeToList() {
 
 		try {
-			Chaine.removeChaineToCSV(this.table.getSelectionModel().getSelectedItem().getId(), Path.CHAINE.getPath());
+			chaineDao.delete(this.table.getSelectionModel().getSelectedItem());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		try {			
+			this.table.getSelectionModel().getSelectedItems().forEach(this.table.getItems()::remove);
 		} catch (Exception e) {
 			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Aucun chaîne selectionnée.");
 		}
-		this.table.getSelectionModel().getSelectedItems().forEach(this.table.getItems()::remove);
+		
+		
+		System.out.println("Elem : " + this.table.getSelectionModel().getSelectedItem().toString());
+	}
+	
+	public boolean estChaineValide(Chaine c) {
+		
+		boolean res = true;
+		Map<String, Element> elementsStock = null;
+		List<Element> elementsEntree = c.getElementsEntree();
+		
+		if (!Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
+			
+			elementsStock = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath());
+		} else {
+			
+			elementsStock = Element.CSVToElementMap(Path.ELEMENT.getPath());
+		}
+		
+		if (c.getNiveauActivation() == 0) {
+			
+			return false;
+		}
+		
+		for(Element element : elementsEntree) { 
+			Element elementStock = elementsStock.get(element.getId());
+			
+			if (elementStock.getQuantite()-element.getQuantite()*c.getNiveauActivation() < 0) {
+				
+				if (element.getPrixAchat() == -1.0) {
+					
+					res = false;
+				}
+			}
+		}
+		
+		return res;
 	}
 
 	@Override
 	public boolean transforme() {
-
-		boolean valide = true;
-		HashMap<String, Element> elements;
-
-		if (Element.CSVToElement(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
-
-			elements = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT.getPath());
-
-		} else {
-
-			elements = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath());
-		}
 		
-		System.out.println(elements.toString());
+		boolean valide = true;
+		HashMap<String, Element> elements = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT.getPath());;
+		int tempsTotal = 0;
+		
+				
+		for(int i=0; i<this.table.getItems().size(); i++) {
+			
+			if (!Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
+				
+				System.out.println("test");
+				elements = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath());
+				System.out.println(elements.toString());
+			}
 
-		for(Chaine chaine : this.table.getItems()) {
+			Chaine chaine = this.table.getItems().get(i);
+			
+			if (estChaineValide(chaine)) {
+				
+				tempsTotal += chaine.getTemps()*chaine.getNiveauActivation();
+				
+				for(Element element : chaine.getElementsEntree()) { 
+					
+					if (elements.get(element.getId()).decrementeQuantite(element.getQuantite()*chaine.getNiveauActivation()) < 0) {
 
-			for(Element element : chaine.getElementsEntree()) {
+						if (elements.get(element.getId()).getPrixAchat() == -1.0) {
 
-				// On récupère l'élément du CSV avec l'identifiant de l'élément en entrée de chaîne et on soustrait la quantité
-				if (elements.get(element.getId()).decrementeQuantite(element.getQuantite()*chaine.getNiveauActivation()) < 0) {
-
-					if (elements.get(element.getId()).getPrixAchat() == -1.0) {
-
-						valide = false;
+							valide = false;
+							
+						} else {
+							
+						}
 					}
 				}
+
+				for(Element element : chaine.getElementsSortie()) {
+
+					elements.get(element.getId()).incrementeQuantite(element.getQuantite()*chaine.getNiveauActivation());
+				}
+				
 			}
-
-			for(Element element : chaine.getElementsSortie()) {
-
-				elements.get(element.getId()).incrementeQuantite(element.getQuantite()*chaine.getNiveauActivation());
-			}
-
-		}
-
-		if (!valide) {
-
-			MessageUtils.messageAlert(AlertType.INFORMATION, "Information", "Transformation a été effectuée avec succès.");
-			//MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Conflit entre la quantité des éléments en entrée et les éléments présent en stock.");
-
-		} else {
 			
-
 			Element.clearCSV(Path.ELEMENT_SIMULATION.getPath());
 
 			elements.forEach((id, element) -> {
@@ -264,7 +337,22 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 				Element.addElementToCSV(element, Path.ELEMENT_SIMULATION.getPath());
 			});
 
-			//MessageUtils.messageAlert(AlertType.INFORMATION, "Information", "Transformation a été effectuée avec succès.");
+		}
+
+		if (!valide) {
+
+			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Conflit entre la quantité des éléments en entrée et les éléments présent en stock.");
+
+		} else {
+			
+			for(Chaine chaine : this.table.getItems()) {
+				
+				this.tempsTotal += chaine.getTemps();
+			}
+
+			
+
+			MessageUtils.messageAlert(AlertType.INFORMATION, "Information", "Transformation a été effectuée avec succès.\nTemps total : " + tempsTotal + "h.");
 
 		}
 		

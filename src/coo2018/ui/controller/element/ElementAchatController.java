@@ -35,6 +35,9 @@ public class ElementAchatController implements Initializable {
 
     private ObservableList<Element> elements = FXCollections.observableArrayList();
 
+    @FXML
+    private TableView<Element> table;
+    
     private Stage stage;
 
     @FXML
@@ -45,9 +48,6 @@ public class ElementAchatController implements Initializable {
 
     @FXML
     private Text tPrixTotal;
-
-    @FXML
-    private TableView<Element> table;
 
     @FXML
     private Button bExport;
@@ -140,7 +140,7 @@ public class ElementAchatController implements Initializable {
         // On créer un FileChooser pour choisir un fichier dans l'ordinateur
         FileChooser fileChooser = new FileChooser();
         // Le fichier enregistrer sera du type ".csv"
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(this.stage);
         if (file != null) {
