@@ -1,0 +1,53 @@
+id,nom,quantite,unite,prixAchat,prixVente
+E030,Brioche,30,carton,-1.0,14.0
+E031,Brioche beurre,30,carton,-1.0,16.0
+E032,Pain chocolat A,10,carton,-1.0,14.0
+E033,Pain chocolat B,0,carton,-1.0,12.0
+E034,Biscuit marque A,7,carton,-1.0,8.0
+E035,Biscuit marque B et C,0,carton,-1.0,7.0
+E036,Pate crepes,-105,litre,9.0,2.0
+E037,Crepes -1.0tures,20,carton,-1.0,7.0
+E038,Crepes fourrees choc,25,carton,-1.0,9.0
+E039,Crepes fourres abricot,25,carton,-1.0,8.0
+E020,Chocolat 40†%,2,litre,12.0,10.0
+E021,Chocolat 50†%,20,litre,-1.0,16.0
+E022,Pate biscuit Q1,-21,litre,-1.0,2.0
+E023,Pate biscuit Q2,-10,litre,-1.0,2.0
+E024,Pate biscuit Q3,-8,litre,-1.0,2.0
+E025,Gateau marque A,10,carton,-1.0,10.0
+E026,Gateau marque B,10,carton,-1.0,8.0
+E027,Gateau marque C,10,carton,-1.0,7.0
+E028,Pate levÈe huile,-27,kg,-1.0,2.0
+E029,Pate levÈe beurre,-30,kg,-1.0,2.0
+E050,Madeleines Choc,0,carton,-1.0,8.0
+E051,Poudre a lever,19,kg,2.0,2.0
+E052,Poudre de perlimpinpin,0,kg,-1.0,50.0
+E010,poudre a lever,50,kg,2.0,2.0
+E011,beurre cacao,785,kg,3.0,2.0
+E012,pate cacao,135,kg,12.0,2.0
+E013,proteine de lait,0,kg,1.0,2.0
+E014,lait en poudre,485,kg,1.0,2.0
+E015,emulsifiant,7,litre,3.0,2.0
+E016,levure,77,unite,3.0,2.0
+E017,confiture abricot,35,litre,2.0,2.0
+E018,noix,45,kg,5.0,2.0
+E019,Chocolat 30†%,8,litre,10.0,8.0
+E040,Brownies marque A,0,carton,-1.0,10.0
+E041,Brownies marque B,0,carton,-1.0,8.0
+E042,Cookies Choc marque A,0,carton,-1.0,9.0
+E043,Cookies Choc marque B,0,carton,-1.0,8.0
+E044,Cookies Choc/Noix marque A,0,carton,-1.0,9.0
+E001,Sucre,443,kg,1.0,2.0
+E045,Cookies Choc/Noix marque B,0,carton,-1.0,8.0
+E002,farine,1420,kg,1.0,2.0
+E046,Pate Madeleines Q1,-5,litre,-1.0,2.0
+E003,farine complete,0,kg,1.0,2.0
+E047,Pate Madeleines Q2,-5,litre,-1.0,2.0
+E004,blanc oeuf,198,litre,2.0,2.0
+E048,Madeleines marque A,5,carton,-1.0,8.0
+E005,jaune oeuf,394,litre,2.0,2.0
+E049,Madeleines marque B,5,carton,-1.0,7.0
+E006,beurre,2494,kg,3.0,2.0
+E007,margarine,0,kg,2.0,2.0
+E008,huile palme,4996,litre,1.0,2.0
+E009,huile colza,1488,litre,2.0,2.0

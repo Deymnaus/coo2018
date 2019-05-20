@@ -1,4 +1,31 @@
 id,nom,niveauActivation,temps,entree,sortie
-C001,Production porte,2,4,E001&6,E002&1
-C002,Production fer,1,2,E003&1,E004&3
-C003,Production porte en fer,2,3,E002&1-E004&3,E005&1
+C001,Chocolat 30†%,1,2,E012&3-E014&5-E011&2-E001&3,E019&10
+C002,Chocolat 40†%,1,2,E012&4-E014&4-E011&2-E001&2,E020&10
+C003,Chocolat 50†%,1,1,E012&5-E011&5-E001&2,E021&10
+C004,Pate biscuit Q1,3,2,E002&5-E001&3-E008&2-E051&1,E022&10
+C005,Pate biscuit Q2,2,1,E002&5-E001&3-E009&2-E015&1-E051&1,E023&10
+C006,Pate biscuit Q3,2,1,E002&5-E001&3-E006&2-E051&1,E024&10
+C007,Gateau marque A,2,1,E024&5-E021&100,E025&5
+C008,Gateau marque B,2,1,E023&5-E020&1,E026&5
+C009,Gateau marque C,2,1,E022&5-E019&1,E027&5
+C010,Pate levÈe huile,3,2,E002&20-E009&5-E001&5-E016&2,E028&25
+C011,Pate levÈe beurre,3,2,E002&20-E006&5-E001&5-E016&2,E029&25
+C012,Brioche,2,1,E028&10,E030&10
+C013,Brioche beurre,3,5,E029&10,E031&10
+C014,Pain chocolat A,2,1,E028&9-E020&3,E032&10
+C015,Pain chocolat B,2,1,E028&9-E019&3,E033&10
+C016,Biscuit marque A,1,3,E022&7,E034&7
+C017,Biscuit marque B et C,1,2,E023&8,E035&8
+C018,Pate crepes,1,3,E002&10-E001&2-E014&5-E009&2-E015&1,E036&12
+C019,Crepes natures,4,2,E036&10,E037&5
+C020,Crepes fourrees choc,5,2,E036&10-E019&3,E038&5
+C021,Crepes fourres abricot,5,1,E036&10-E017&3,E039&5
+C022,Brownies marque A,2,1,E023&5-E005&2-E021&2-E018&1,E040&6
+C023,Brownies marque B,2,2,E024&5-E005&2-E020&2-E018&1,E040&6
+C024,Cookies Choc,1,2,E024&4-E020&1,E044&3-E045&2
+C025,Cookies Choc/Noix,1,2,E024&4-E020&1-E018&1,E046&3-E047&2
+C026,Pate Madeleines Q1,1,3,E002&5-E001&3-E006&1-E051&1-E004&1-E005&1,E046&11
+C027,Pate Madeleines Q2,1,4,E002&5-E001&3-E008&1-E051&1-E004&1-E005&1,E047&11
+C028,Madeleines marque A,2,1,E046&5,E048&5
+C029,Madeleines marque B,2,1,E047&5,E049&5
+C030,Madeleines Choc,2,50,E047&5-E019&1-E052&10,E050&5

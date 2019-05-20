@@ -3,10 +3,7 @@ package coo2018.ui.controller.chaine;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import coo2018.model.Chaine;
 import coo2018.model.Element;
@@ -70,6 +67,17 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 	private Button bDetail;
 	
 	private int tempsTotal;
+
+	//contient toutes les chaînes de production qui ne demandent que des matières premières
+	private ArrayList<Chaine> listeChaineMatierePremiere = new ArrayList<>();
+
+	private ArrayList<Chaine> listeChaine = new ArrayList<>();
+
+	private ArrayList<Chaine> listeChaineNonBloquante = new ArrayList<>();
+
+	private ArrayList<Chaine> listeChaineBloquante = new ArrayList<>();
+
+	private HashMap<String, Integer> elementsManquant = new HashMap<>();
 	
 	DAO<Chaine> chaineDao = new ChaineDAO();
 
@@ -173,7 +181,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 				
 			} else {
 				
-				transforme();
+				optimizer();
 			}
 		});
 	}
@@ -297,8 +305,6 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 		for(int i=0; i<this.table.getItems().size(); i++) {
 			
 			if (!Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
-				
-				System.out.println("test");
 				elements = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath());
 				System.out.println(elements.toString());
 			}
@@ -368,6 +374,167 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 		}catch (Exception e) {
 			MessageUtils.messageAlert(Alert.AlertType.ERROR, "Erreur", e.getMessage());
 			PersistenceUtils.savePath(Path.CHAINE, "");
+		}
+	}
+
+
+	public void optimizer(){
+		initialiseListe();
+		HashMap<String, Element> elements = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT.getPath());;
+		tempsTotal = 0;
+		calculTemps(listeChaineMatierePremiere);
+		elements = transformeListe(listeChaineMatierePremiere, elements);
+		HashMap<String, Element> elementsTemp = elements;
+		for(int i=0;i<listeChaineNonBloquante.size();i++){
+			boolean elementsDisponible = true;
+			for(Element element : listeChaineNonBloquante.get(i).getElementsEntree()) {
+				if(element.getQuantite()>elements.get(element.getId()).getQuantite() && element.getPrixAchat()==-1.0){
+					elementsDisponible = false;
+					elementsManquant.put(element.getId(),element.getQuantite()-elements.get(element.getId()).getQuantite());
+				}else{
+					elementsTemp.get(element.getId()).decrementeQuantite(element.getQuantite());
+				}
+			}
+			if(!elementsDisponible){
+				listeChaineBloquante.add(listeChaineNonBloquante.get(i));
+				listeChaineNonBloquante.remove(i);
+				i--;
+			}
+		}
+		calculTemps(listeChaineNonBloquante);
+		elements = transformeListe(listeChaineNonBloquante, elements);
+		listeChaineNonBloquante.clear();
+		prodList(elements);
+		calculTemps(listeChaine);
+		elements = transformeListe(listeChaine,elements);
+		listeChaine.clear();
+		if(tempsTotal>60){
+			MessageUtils.messageAlert(AlertType.INFORMATION, "Information", "Il n'est pas possible de " +
+					"lancer la simulation car elle dépasse les 60h de production.\nTemps total : " + tempsTotal + "h.");
+		}else{
+			int compteur = 0;
+			while(!listeChaineBloquante.isEmpty() && compteur<3) {
+				if (gestionListeBloquante(elements)) {
+					calculTemps(listeChaineBloquante);
+					elements = transformeListe(listeChaineBloquante, elements);
+				}else{
+					compteur ++;
+				}
+			}
+			if(!listeChaineBloquante.isEmpty()){
+				String nomsElements = "";
+				for (Map.Entry mapentry : elementsManquant.entrySet()) {
+					nomsElements += mapentry.getValue()+" de "
+							+ mapentry.getKey()+" ";
+				}
+				MessageUtils.messageAlert(AlertType.INFORMATION, "Information", "La transformation n'a " +
+						"pas pu être effectuée. Il manque les élements suivants : "+nomsElements+
+						"\nTemps total : " + tempsTotal + "h.");
+			}else{
+				MessageUtils.messageAlert(AlertType.INFORMATION, "Information", "La transformation a " +
+						"été effectuée avec succès.\nTemps total : " + tempsTotal + "h.");
+			}
+		}
+		Element.clearCSV(Path.ELEMENT_SIMULATION.getPath());
+
+		elements.forEach((id, element) -> {
+
+			Element.addElementToCSV(element, Path.ELEMENT_SIMULATION.getPath());
+		});
+	}
+
+	public void calculTemps(ArrayList<Chaine> chaine){
+		int temps = 0;
+		for(int i=0;i<chaine.size();i++){
+			if(chaine.get(i).getTemps()>temps){
+				temps = chaine.get(i).getTemps();
+			}
+		}
+		tempsTotal += temps;
+	}
+
+	public boolean gestionListeBloquante(HashMap<String, Element> elements){
+		boolean debloque = false;
+		for(int i=0;i<listeChaineBloquante.size();i++){
+			boolean hasAllElement = true;
+			for(Element element : listeChaineBloquante.get(i).getElementsEntree()){
+				if(elementsManquant.containsKey(element.getId())){
+					hasAllElement = false;
+				}
+			}
+			if(hasAllElement){
+				listeChaine.add(listeChaineBloquante.get(i));
+				listeChaineBloquante.remove(i);
+				i--;
+				debloque = true;
+			}
+		}
+		return debloque;
+	}
+
+	public void prodList(HashMap<String, Element> elements){
+		for(int i=0;i<listeChaine.size();i++) {
+			System.out.println(listeChaine.get(i).getId());
+			boolean elementsDisponible = true;
+			for (Element element : listeChaine.get(i).getElementsEntree()) {
+				if (element.getQuantite() > elements.get(element.getId()).getQuantite() && element.getPrixAchat() == -1) {
+					elementsDisponible = false;
+					elementsManquant.put(element.getId(), element.getQuantite() - elements.get(element.getId()).getQuantite());
+				}else{
+					System.out.println(listeChaine.get(i).getId()+" "+element.getId()+ " "+element.getQuantite()+ " "+elements.get(element.getId()).getQuantite());
+					elements.get(element.getId()).decrementeQuantite(element.getQuantite());
+				}
+			}
+			if(!elementsDisponible){
+				listeChaineBloquante.add(listeChaine.get(i));
+				listeChaine.remove(i);
+				i--;
+			}
+		}
+
+	}
+
+	public HashMap<String, Element> transformeListe(ArrayList<Chaine> listeChaine, HashMap<String, Element> elements){
+		for(Chaine chaine : listeChaine) {
+			for (Element element : chaine.getElementsEntree()){
+				elements.get(element.getId()).decrementeQuantite(element.getQuantite());
+			}
+			for(Element element : chaine.getElementsSortie()){
+				elements.get(element.getId()).incrementeQuantite(element.getQuantite());
+				if(elementsManquant.containsKey(element.getId()) && elementsManquant.get(element.getId())>element.getQuantite()){
+					elementsManquant.remove(element.getId());
+				}
+			}
+		}
+		return elements;
+	}
+
+	public void initialiseListe(){
+		for(int i=0; i<this.table.getItems().size(); i++) {
+			Chaine chaine = this.table.getItems().get(i);
+			boolean matiereP = true;
+			boolean neBloquePas = true;
+			for(Element element : chaine.getElementsEntree()) {
+				if(element.getPrixAchat() == -1.0) {
+					matiereP = false;
+				}
+				for (int j = 0; j < this.table.getItems().size(); j++) {
+					for (Element el : this.table.getItems().get(j).getElementsEntree()) {
+						if (chaine != this.table.getItems().get(j) && element.getId() == el.getId()) {
+							neBloquePas = false;
+						}
+					}
+				}
+			}
+			for (int j = 0; j < chaine.getNiveauActivation(); j++){
+				if(matiereP) {
+					listeChaineMatierePremiere.add(chaine);
+				}else if(neBloquePas){
+					listeChaineNonBloquante.add(chaine);
+				}else{
+					listeChaine.add(chaine);
+				}
+			}
 		}
 	}
 
