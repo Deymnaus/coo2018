@@ -5,9 +5,11 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.*;
 
+import coo2018.App;
 import coo2018.model.Chaine;
 import coo2018.model.Element;
 import coo2018.ui.IActionFormulaire;
+import coo2018.ui.controller.menu.MenuController;
 import coo2018.utils.message.MessageUtils;
 import coo2018.utils.persistence.Path;
 import coo2018.utils.persistence.PersistenceUtils;
@@ -78,23 +80,28 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 	private ArrayList<Chaine> listeChaineBloquante = new ArrayList<>();
 
 	private HashMap<String, Integer> elementsManquant = new HashMap<>();
-	
-	DAO<Chaine> chaineDao = new ChaineDAO();
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 
-		String res = Path.CHAINE.getPath();
-		File tempFile = new File(res);
-		
+		String res = "";
+		File tempFile = null;
 		this.tempsTotal = 0;
+		
+		try {
+			res = Path.CHAINE.getPath();
+			tempFile = new File(res);
 
-		if (!res.equals("") && tempFile.exists()) {
+		} catch(Exception e) {
+			
+		}
+		
+		if (!res.equals("") && tempFile != null) {
 
 			// On clear la liste de chaînes (pour ajouter les nouveaux objets)
 			this.chaines.clear();
 			try {
-				this.chaines.addAll(chaineDao.findAll());
+				this.chaines.addAll(App.chaineDao.findAll());
 
 			} catch (Exception e) {
 
@@ -105,6 +112,9 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 			// On clear la tableview et on ajoute les nouveaux objets
 			this.table.getItems().clear();
 			this.table.getItems().addAll(this.chaines);
+		} else {
+			
+			MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Vous n'avez renseignez aucun fichier de chaînes de production.");
 		}
 
 
@@ -159,7 +169,8 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 
 		this.bVisualiser.setOnAction(actionEvent -> {
 			
-			if (!Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
+//			if (!Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
+			if (!MenuController.elementsSimulation.isEmpty()) {
 				
 				try {
 					RoutingUtils.goTo(actionEvent, Route.ELEMENT_SIMULATION);
@@ -175,7 +186,8 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 
 		this.bProduction.setOnAction(actionEvent -> {
 
-			if (!Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
+//			if (!Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
+			if (!MenuController.elementsSimulation.isEmpty()) {
 				
 				MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Une simulation est déjà en cours, cliquez sur visualier.");
 				
@@ -228,7 +240,8 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 			clearTextField();
 
 			try {
-				Chaine.addChaineToCSV(chaine, Path.CHAINE.getPath());
+				App.chaineDao.create(chaine);
+//				Chaine.addChaineToCSV(chaine, Path.CHAINE.getPath());
 
 			} catch (Exception e) {
 
@@ -245,7 +258,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 	public void removeToList() {
 
 		try {
-			chaineDao.delete(this.table.getSelectionModel().getSelectedItem());
+			App.chaineDao.delete(this.table.getSelectionModel().getSelectedItem());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -257,7 +270,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 		}
 		
 		
-		System.out.println("Elem : " + this.table.getSelectionModel().getSelectedItem().toString());
+//		System.out.println("Elem : " + this.table.getSelectionModel().getSelectedItem().toString());
 	}
 	
 	public boolean estChaineValide(Chaine c) {
@@ -266,9 +279,15 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 		Map<String, Element> elementsStock = null;
 		List<Element> elementsEntree = c.getElementsEntree();
 		
-		if (!Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
+//		if (!Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
+		if (!MenuController.elementsSimulation.isEmpty()) {
 			
-			elementsStock = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath());
+//			elementsStock = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath());
+			elementsStock = new HashMap<String, Element>();
+			for (Element element : MenuController.elementsSimulation) {
+				
+				elementsStock.put(element.getId(), element);
+			}
 		} else {
 			
 			elementsStock = Element.CSVToElementMap(Path.ELEMENT.getPath());
@@ -301,13 +320,15 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 		HashMap<String, Element> elements = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT.getPath());;
 		int tempsTotal = 0;
 		
-				
+		MenuController.elementsAchat.clear();
+		MenuController.elementsSimulation.clear();
+
 		for(int i=0; i<this.table.getItems().size(); i++) {
 			
-			if (!Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
-				elements = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath());
-				System.out.println(elements.toString());
-			}
+//			if (!Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath()).isEmpty()) {
+//				elements = (HashMap<String, Element>) Element.CSVToElementMap(Path.ELEMENT_SIMULATION.getPath());
+////				System.out.println(elements.toString());
+//			}
 
 			Chaine chaine = this.table.getItems().get(i);
 			
@@ -336,11 +357,12 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 				
 			}
 			
-			Element.clearCSV(Path.ELEMENT_SIMULATION.getPath());
+//			Element.clearCSV(Path.ELEMENT_SIMULATION.getPath());
 
 			elements.forEach((id, element) -> {
 
-				Element.addElementToCSV(element, Path.ELEMENT_SIMULATION.getPath());
+				MenuController.elementsSimulation.add(element);
+				//Element.addElementToCSV(element, Path.ELEMENT_SIMULATION.getPath());
 			});
 
 		}
@@ -368,7 +390,7 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 	public void reinitializeTableAndChaines(){
 		try {
 			this.chaines.clear();
-			this.chaines.addAll(Chaine.CSVToChaine(Path.CHAINE.getPath()));
+			this.chaines.addAll(App.chaineDao.findAll());
 			this.table.getItems().clear();
 			this.table.getItems().addAll(this.chaines);
 		}catch (Exception e) {
@@ -427,19 +449,23 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 					nomsElements += mapentry.getValue()+" de "
 							+ mapentry.getKey()+" ";
 				}
-				MessageUtils.messageAlert(AlertType.INFORMATION, "Information", "La transformation n'a " +
-						"pas pu être effectuée. Il manque les élements suivants : "+nomsElements+
+				MessageUtils.messageAlert(AlertType.INFORMATION, "Information", "La transformation a été partiellement " +
+						" effectuée. Il manque les élements suivants : "+nomsElements+
 						"\nTemps total : " + tempsTotal + "h.");
 			}else{
 				MessageUtils.messageAlert(AlertType.INFORMATION, "Information", "La transformation a " +
 						"été effectuée avec succès.\nTemps total : " + tempsTotal + "h.");
 			}
 		}
-		Element.clearCSV(Path.ELEMENT_SIMULATION.getPath());
+		MenuController.elementsSimulation.clear();
+//		Element.clearCSV(Path.ELEMENT_SIMULATION.getPath());
 
 		elements.forEach((id, element) -> {
 
-			Element.addElementToCSV(element, Path.ELEMENT_SIMULATION.getPath());
+			
+//			Element.addElementToCSV(element, Path.ELEMENT_SIMULATION.getPath());
+			MenuController.elementsSimulation.add(element);
+
 		});
 	}
 
@@ -474,14 +500,14 @@ public class ChaineController implements Initializable, IActionFormulaire, ITran
 
 	public void prodList(HashMap<String, Element> elements){
 		for(int i=0;i<listeChaine.size();i++) {
-			System.out.println(listeChaine.get(i).getId());
+//			System.out.println(listeChaine.get(i).getId());
 			boolean elementsDisponible = true;
 			for (Element element : listeChaine.get(i).getElementsEntree()) {
 				if (element.getQuantite() > elements.get(element.getId()).getQuantite() && element.getPrixAchat() == -1) {
 					elementsDisponible = false;
 					elementsManquant.put(element.getId(), element.getQuantite() - elements.get(element.getId()).getQuantite());
 				}else{
-					System.out.println(listeChaine.get(i).getId()+" "+element.getId()+ " "+element.getQuantite()+ " "+elements.get(element.getId()).getQuantite());
+//					System.out.println(listeChaine.get(i).getId()+" "+element.getId()+ " "+element.getQuantite()+ " "+elements.get(element.getId()).getQuantite());
 					elements.get(element.getId()).decrementeQuantite(element.getQuantite());
 				}
 			}

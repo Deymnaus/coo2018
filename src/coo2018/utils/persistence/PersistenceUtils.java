@@ -46,7 +46,7 @@ public class PersistenceUtils {
 			break;
 	   }
 	   
-	   CSVPrinter printer = CSVUtils.getPrinter("values.csv");
+	   CSVPrinter printer = CSVUtils.getPrinter("valuesTest.csv");
 		
 		try {
 			

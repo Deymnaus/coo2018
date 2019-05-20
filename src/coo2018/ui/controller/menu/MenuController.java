@@ -2,8 +2,11 @@ package coo2018.ui.controller.menu;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import coo2018.model.Element;
 import coo2018.utils.message.MessageUtils;
 import coo2018.utils.persistence.Path;
 import coo2018.utils.persistence.PersistenceUtils;
@@ -36,6 +39,10 @@ public class MenuController implements Initializable {
 
     @FXML
     private Button bAchat;
+    
+    public static List<Element> elementsAchat = new ArrayList<Element>();
+    
+    public static List<Element> elementsSimulation = new ArrayList<Element>();
 
     public void initialize(URL url, ResourceBundle rb){
 
@@ -48,7 +55,7 @@ public class MenuController implements Initializable {
             if (!Path.ELEMENT.getPath().equals("")) {
             	
             	try {
-    				new ChaineDAO().findAll();
+//    				new ChaineDAO().findAll();
                     RoutingUtils.goTo(actionEvent, Route.CHAINE);
 
     			} catch (Exception e) {
@@ -77,6 +84,7 @@ public class MenuController implements Initializable {
         this.bImportElement.setOnAction(actionEvent -> {
             try {
                 openAndSaveFile(Path.ELEMENT);
+                RoutingUtils.goTo(actionEvent, Route.ELEMENT);
             } catch (Exception e) {
                 MessageUtils.messageAlert(Alert.AlertType.ERROR, "Erreur", "Importation annulée.");
             }

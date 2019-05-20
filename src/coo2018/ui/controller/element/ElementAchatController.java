@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import coo2018.App;
 import coo2018.model.Element;
+import coo2018.ui.controller.menu.MenuController;
 import coo2018.utils.message.MessageUtils;
 import coo2018.utils.persistence.Path;
 import coo2018.utils.rooting.Route;
@@ -62,8 +64,19 @@ public class ElementAchatController implements Initializable {
 
         //List<Element> elementAAcheter = new ArrayList<Element>();
 
-        Element.CSVToElement(Path.ELEMENT.getPath()).forEach(element -> {
-
+//        Element.CSVToElement(Path.ELEMENT.getPath()).forEach(element -> {
+//
+//            if (element.getQuantite() < 0) {
+//
+//                element.setQuantite(element.getQuantite()*(-1));
+//                this.elements.add(element);
+//
+//                prixTotal += element.getQuantite()*element.getPrixAchat();
+//            }
+//        });
+        
+        MenuController.elementsAchat.forEach(element -> {
+    	   
             if (element.getQuantite() < 0) {
 
                 element.setQuantite(element.getQuantite()*(-1));
@@ -109,12 +122,23 @@ public class ElementAchatController implements Initializable {
 
 //									element.setQuantite(elementAAcheter.getQuantite());
                                     element.setQuantite(0);
-                                    Element.addElementToCSV(element, Path.ELEMENT.getPath());
+                                    try {
+										App.elementDao.create(element);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+//                                    Element.addElementToCSV(element, Path.ELEMENT.getPath());
                                 }
 
                             } else {
 
-                                Element.addElementToCSV(element, Path.ELEMENT.getPath());
+                                try {
+									App.elementDao.create(element);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+
+//                                Element.addElementToCSV(element, Path.ELEMENT.getPath());
                             }
                         });
                     });

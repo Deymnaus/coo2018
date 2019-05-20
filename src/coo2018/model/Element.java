@@ -187,32 +187,6 @@ public class Element extends Observable implements IActionCSV<Element> {
     /**
      * 
      * @param path
-     * @return List<Element>
-     */
-    public static List<Element> CSVToElement(String path) {
-    	
-		List<Element> elements = new ArrayList<Element>();
-		
-		CSVUtils.getReader(path).forEach(csvRecord -> {
-			
-			elements.add(new Element(
-						csvRecord.toMap().get("id"),
-						csvRecord.toMap().get("nom"),
-						Integer.parseInt(csvRecord.toMap().get("quantite")),
-//						100,
-						csvRecord.toMap().get("unite"),
-						csvRecord.toMap().get("prixAchat").equals("NA") ? 0.0 : Double.parseDouble(csvRecord.toMap().get("prixAchat")),
-						csvRecord.toMap().get("prixVente").equals("NA") ? 0.0 : Double.parseDouble(csvRecord.toMap().get("prixVente"))
-						)	
-					);
-		});
-		
-		return elements;
-	}
-    
-    /**
-     * 
-     * @param path
      * @return Map<String, Element>
      */
     public static Map<String, Element> CSVToElementMap(String path) {
@@ -235,85 +209,6 @@ public class Element extends Observable implements IActionCSV<Element> {
 		return elements;
 	}
 
-    /**
-     * 
-     * @param id
-     * @param path
-     * @throws IOException
-     */
-	public static void removeElementToCSV(String id, String path) throws Exception {
-		
-		List<Element> elements = CSVToElement(path);
-		CSVPrinter printer = CSVUtils.getPrinter(path);
-		
-		try {
-			
-		printer.printRecord("id", "nom", "quantite", "unite", "prixAchat", "prixVente");
-	
-		elements.forEach(e -> {
-			
-			// Remplacer par getId()
-			if (!e.getId().equals(id)) {
-				
-				try {
-					printer.printRecord(e.getId(), e.getNom(), e.getQuantite(), e.getUnite(), e.getPrixAchat(), e.getPrixVente());
-				} catch (IOException e1) {
-
-				}
-			}
-		});	
-
-		printer.close();
-			
-		} catch (IOException ex) {
-
-			throw new Exception("");
-		}
-	}
-	
-	/**
-	 * 
-	 * @param element
-	 * @param path
-	 */
-	public static void addElementToCSV(Element element, String path) {
-		
-		List<Element> elements = CSVToElement(path);
-		CSVPrinter printer = CSVUtils.getPrinter(path);
-		
-		try {
-			
-			printer.printRecord("id", "nom", "quantite", "unite", "prixAchat", "prixVente");
-		
-		} catch (IOException e1) {
-
-			e1.printStackTrace();
-		}
-		
-		elements.forEach(e -> {
-			
-			try {
-				
-				printer.printRecord(e.getId(), e.getNom(), e.getQuantite(), e.getUnite(), e.getPrixAchat(), e.getPrixVente());
-			
-			} catch (IOException ex) {
-
-				ex.printStackTrace();
-			}
-		});
-		
-		try {
-			
-			printer.printRecord(element.getId(), element.getNom(), element.getQuantite(), element.getUnite(), element.getPrixAchat(), element.getPrixVente());
-			printer.close();
-			
-		} catch (IOException ex) {
-
-			ex.printStackTrace();
-		}
-	
-	}
-    
     @Override
 	public String toString() {
     	

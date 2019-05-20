@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
+import coo2018.App;
 import coo2018.model.Element;
 import coo2018.ui.IActionFormulaire;
 import coo2018.utils.message.MessageUtils;
@@ -64,9 +65,6 @@ public class ElementController implements Initializable, IActionFormulaire {
 
     @FXML
     private Button bSupprimer;
-    
-    DAO<Element> elementDao = new ElementDAO();
-
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -79,7 +77,7 @@ public class ElementController implements Initializable, IActionFormulaire {
             this.elements.clear();
             
             try {
-				this.elements.addAll(elementDao.findAll());
+				this.elements.addAll(App.elementDao.findAll());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -254,7 +252,7 @@ public class ElementController implements Initializable, IActionFormulaire {
 
             // On rajoute l'élément dans le fichier CSV
 
-			this.elementDao.create(element);
+			App.elementDao.create(element);
             //Element.addElementToCSV(element, Path.ELEMENT.getPath());
 
         } else {
@@ -270,7 +268,7 @@ public class ElementController implements Initializable, IActionFormulaire {
     public void removeToList() {
 
         try {
-        	this.elementDao.delete(this.table.getSelectionModel().getSelectedItem());
+        	App.elementDao.delete(this.table.getSelectionModel().getSelectedItem());
 //            Element.removeElementToCSV(this.table.getSelectionModel().getSelectedItem().getId(), Path.ELEMENT.getPath());
         } catch (Exception e) {
             MessageUtils.messageAlert(AlertType.ERROR, "Erreur", "Aucun élément selectionné.");

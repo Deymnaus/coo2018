@@ -5,7 +5,9 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import coo2018.App;
 import coo2018.model.Element;
+import coo2018.ui.controller.menu.MenuController;
 import coo2018.utils.message.MessageUtils;
 import coo2018.utils.persistence.Path;
 import coo2018.utils.rooting.Route;
@@ -43,16 +45,18 @@ public class ElementSimulationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        String res = Path.ELEMENT_SIMULATION.getPath();
-        File tempFile = new File(res);
+//        String res = Path.ELEMENT_SIMULATION.getPath();
+//        File tempFile = new File(res);
 
         // Si l'utilisateur n'a jamais renseigné de fichier CSV ou que le chemin du fichier est incorrect
-        if (!res.equals("") && tempFile.exists()) {
+//        if (!res.equals("") && tempFile.exists()) {
             this.elements.clear();
-            this.elements.addAll(Element.CSVToElement(res));
+            
+//            this.elements.addAll(Element.CSVToElement(res));
+            this.elements.addAll(MenuController.elementsSimulation);
             this.table.getItems().clear();
             this.table.getItems().addAll(this.elements);
-        }
+//        }
 
 
         /*
@@ -65,12 +69,23 @@ public class ElementSimulationController implements Initializable {
 
                 Element.clearCSV(Path.ELEMENT.getPath());
 
-                Element.CSVToElement(Path.ELEMENT_SIMULATION.getPath()).forEach(element -> {
+//                Element.CSVToElement(Path.ELEMENT_SIMULATION.getPath()).forEach(element -> {
+//
+//                    Element.addElementToCSV(element, Path.ELEMENT.getPath());
+//                });
+                
+                MenuController.elementsSimulation.forEach(element -> {
 
-                    Element.addElementToCSV(element, Path.ELEMENT.getPath());
+                	try {
+						App.elementDao.create(element);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+//                    Element.addElementToCSV(element, Path.ELEMENT.getPath());
                 });
 
-                Element.clearCSV(Path.ELEMENT_SIMULATION.getPath());
+                MenuController.elementsSimulation.clear();
+//                Element.clearCSV(Path.ELEMENT_SIMULATION.getPath());
 
                 this.elements.clear();
                 this.table.getItems().clear();
@@ -90,7 +105,8 @@ public class ElementSimulationController implements Initializable {
             Optional<ButtonType> result = MessageUtils.messageAlert(AlertType.CONFIRMATION, "Validation", "Voulez-vous abandonner cette simulation ?");
             if (result.get() == ButtonType.OK){
 
-                Element.clearCSV(Path.ELEMENT_SIMULATION.getPath());
+            	MenuController.elementsSimulation.clear();
+//                Element.clearCSV(Path.ELEMENT_SIMULATION.getPath());
 
                 this.elements.clear();
                 this.table.getItems().clear();

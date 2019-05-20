@@ -27,7 +27,7 @@ public enum Path {
     	
 		String res = "";
 		
-		for(CSVRecord parser : CSVUtils.getReader("values.csv")) {
+		for(CSVRecord parser : CSVUtils.getReader("valuesTest.csv")) {
 			
 			switch (this.path) {
 			
@@ -41,7 +41,7 @@ public enum Path {
 					res = parser.toMap().get("elementSimulationPath");
 					break;
 				case "elementAchat":
-					res = parser.toMap().get("elementAchatPath");
+					res = parser.toMap().get("elementsAchatPath");
 					break;
 				default:
 					break;
